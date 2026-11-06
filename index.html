@@ -68,7 +68,7 @@
   </nav>
   <div class="nav__acciones">
     <button class="tema-boton" type="button" data-tema-boton aria-pressed="false" aria-label="Cambiar a modo oscuro" title="Modo oscuro"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-moon"/></svg></button>
-    <a class="nav__cot" href="#cotizar" data-contador><span class="txt">Cotización</span> <span class="mono" aria-label="equipos en la cotización">0</span></a>
+    <button type="button" class="nav__cot" data-contador data-carrito aria-label="Ver la cotización: sin equipos" aria-expanded="false" aria-controls="carrito-panel"><span class="nav__carrito" aria-hidden="true"><svg viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"><path d="M24 40H44L72 168H196M53 80H216L198 140H66"/><circle cx="86" cy="204" r="16"/><circle cx="182" cy="204" r="16"/></svg><span class="mono">0</span></span><span class="txt">Cotización</span></button>
     <a class="btn btn--pequeno" href="#cotizar">Cotizar proyecto <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a>
     <button class="nav__menu" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-movil"><span></span><span></span><span></span></button>
   </div>
@@ -92,11 +92,6 @@
 
     <div class="lamina__titulo">
       <h1 id="titulo-inicio">Tu planta láctea, dibujada y fabricada <em>en acero inoxidable.</em></h1>
-      <!-- El robot de Equinox presenta el plano: apunta al tanque holográfico, hacia el cajetín donde se configura la línea. Abre el asistente. -->
-      <button type="button" class="lamina__robot" data-asistente-abrir="cotizar" aria-label="Abrir el asistente de Equinox para cotizar tu planta">
-        <img src="assets/img/asistente/holograma.webp" alt="" width="598" height="560" fetchpriority="high" decoding="async">
-        <span class="lamina__robot-nota"><span class="mono">Asistente Equinox</span><span>Pregúntame<span class="lamina__robot-mas"> por tu planta</span></span></span>
-      </button>
       <p class="lead">Tinas, pasteurizadores, tanques y moldes dimensionados para tu producto y tus litros diarios. Diseñamos, fabricamos e instalamos desde Antioquia.</p>
     </div>
 
@@ -107,19 +102,15 @@
         <div class="litros__valor"><input id="litros-num" class="mono" type="text" inputmode="numeric" autocomplete="off" value="2.000" aria-describedby="litros-pista" data-litros-num><span class="mono" aria-hidden="true">L</span></div>
         <input type="range" id="litros" min="0" max="100" step="1" value="50" aria-label="Leche por día" aria-describedby="litros-pista">
         <output id="litros-salida" class="sr" for="litros">2.000 L</output>
-        <p class="litros__pista" id="litros-pista" data-litros-pista>Es un ejemplo: escribe tus litros para dimensionar la línea.</p>
+        <p class="litros__pista" id="litros-pista" data-litros-pista>Valor de ejemplo: escribe tus litros.</p>
       </div>
       <div class="c-6 fin" role="radiogroup" aria-labelledby="lbl-producto">
         <span class="rotulo" id="lbl-producto">¿Qué produces?</span>
         <div class="chips" data-chips-aplicacion></div>
       </div>
-      <div class="c-4 cajetin__cta">
+      <div class="c-6 fin cajetin__cta">
         <a class="btn" href="#cotizar" data-cotizar-linea>Cotizar esta línea <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a>
         <span class="cajetin__resumen" data-resumen>5 equipos sugeridos</span>
-      </div>
-      <div class="c-2 fin cajetin__wa">
-        <a class="enlace" href="planta.html" data-planta-linea><svg width="20" height="20" aria-hidden="true"><use href="assets/img/iconos.svg#i-ruler"/></svg> Armar en 3D</a>
-        <a class="enlace" href="#" data-wa-linea target="_blank" rel="noopener"><svg width="20" height="20" aria-hidden="true"><use href="assets/img/iconos.svg#i-whatsapp-logo"/></svg> WhatsApp</a>
       </div>
       <a class="c-6 fin ultima ver-planta" href="planta.html" data-ver-funcionando>
         <span class="ver-planta__play" aria-hidden="true"><svg><use href="assets/img/iconos.svg#i-play"/></svg></span>
@@ -216,6 +207,18 @@
   </div>
 </section>
 
+<!-- Hecho por Equinox: fotos reales -->
+<section class="seccion galeria-real" aria-labelledby="titulo-galeria" id="hecho-por-equinox">
+  <div class="contenedor">
+    <div class="seccion__cabeza revela">
+      <h2 id="titulo-galeria">Esto sale de nuestro taller.</h2>
+      <div style="justify-self:end;display:grid;gap:16px"><p class="lead">Equipos fabricados por Equinox en acero inoxidable. Toca uno para ver su ficha, su plano y cómo funciona en 3D.</p><p class="galeria-real__acciones"><span class="sello">Fotos reales</span><a class="btn" href="equipos.html">Ver los 19 equipos <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a></p></div>
+    </div>
+    <ul class="galeria-real__grid" data-galeria></ul>
+  </div>
+</section>
+
+
 <!-- Anatomía del tanque (3D) -->
 <section class="anatomia cuadricula" id="tanque" aria-labelledby="titulo-tanque">
   <div class="contenedor anatomia__intro">
@@ -290,7 +293,7 @@
     <div class="fabrica__etapas">
       <article class="etapa etapa--plano revela">
         <div class="visor" aria-hidden="true">
-          <svg viewBox="0 0 200 150" width="70%"><path d="M30 120H170M40 120V40H90V120M100 120V60A30 8 0 0 1 160 60V120" /><path d="M40 30H90M36 26V34M94 26V34" style="stroke:#e8604a"/><path d="M110 75H150M110 95H150" style="stroke-dasharray:4 3"/></svg>
+          <svg class="plano-hoja" viewBox="0 0 300 400" focusable="false"><defs><pattern id="ph-cuadricula" width="10" height="10" patternUnits="userSpaceOnUse"><path class="pat-c" d="M10 0H0V10"/></pattern><pattern id="ph-rayado" width="2.4" height="2.4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path class="pat" d="M0 0V2.4"/></pattern><marker id="ph-fl" viewBox="0 0 6 6" refX="6" refY="3" markerWidth="4" markerHeight="4" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="ph-punta" d="M0 .9L6 3L0 5.1Z"/></marker></defs><path class="fondo" d="M14 14h272v372h-272Z"/><g class="hoja" style="--d:0s;--t:1.2s"><path class="tr f" pathLength="1" d="M8 8h284v384h-284Z"/><path class="tr" pathLength="1" d="M14 14h272v372h-272Z"/><path class="tr f" pathLength="1" d="M82 8V14"/><path class="tr f" pathLength="1" d="M82 386V392"/><path class="tr f" pathLength="1" d="M150 8V14"/><path class="tr f" pathLength="1" d="M150 386V392"/><path class="tr f" pathLength="1" d="M218 8V14"/><path class="tr f" pathLength="1" d="M218 386V392"/><path class="tr f" pathLength="1" d="M8 107H14"/><path class="tr f" pathLength="1" d="M286 107H292"/><path class="tr f" pathLength="1" d="M8 200H14"/><path class="tr f" pathLength="1" d="M286 200H292"/><path class="tr f" pathLength="1" d="M8 293H14"/><path class="tr f" pathLength="1" d="M286 293H292"/><path class="tr" pathLength="1" d="M14 340H286"/><path class="tr" pathLength="1" d="M92 340V386"/><path class="tr" pathLength="1" d="M204 340V386"/><path class="tr" pathLength="1" d="M245 340V386"/><path class="tr" pathLength="1" d="M204 355H286"/><path class="tr" pathLength="1" d="M204 370H286"/></g><g class="obj" style="--d:0.35s;--t:1.6s"><path class="tr" pathLength="1" d="M50 66V156"/><path class="tr" pathLength="1" d="M130 66V156"/><path class="tr" pathLength="1" d="M50 66A40 16 0 0 1 130 66"/><path class="tr" pathLength="1" d="M50 156A40 12 0 0 0 130 156"/><path class="tr" pathLength="1" d="M126 66V156"/><path class="tr" pathLength="1" d="M90 54A36 12 0 0 1 126 66"/><path class="tr" pathLength="1" d="M126 156A36 9 0 0 1 90 165"/><path class="tr" pathLength="1" d="M80 30h20v14h-20Z"/><path class="tr" pathLength="1" d="M76 44h28v5h-28Z"/><path class="tr" pathLength="1" d="M100 32h18v10h-18Z"/><path class="tr" pathLength="1" d="M118 34h2v6h-2Z"/><path class="tr" pathLength="1" d="M89.2 54V150"/><path class="tr" pathLength="1" d="M90.8 54V150"/><path class="tr" pathLength="1" d="M91 118h22v3h-22Z"/><path class="tr" pathLength="1" d="M91 142h18v3h-18Z"/><path class="tr" pathLength="1" d="M53 47h14v8h-14Z"/><path class="tr" pathLength="1" d="M51 44.5h18v2.5h-18Z"/><path class="tr" pathLength="1" d="M69.3 45.8a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0 -2.4 0"/><path class="tr" pathLength="1" d="M56 80h16v14h-16Z"/><path class="tr" pathLength="1" d="M58.5 82.5h11v4.5h-11Z"/><path class="tr" pathLength="1" d="M59.2 90.5a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0 -2.6 0"/><path class="tr" pathLength="1" d="M64.7 90.5a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0 -2.6 0"/><path class="tr" pathLength="1" d="M87.5 167V183.5H98"/><path class="tr" pathLength="1" d="M92.5 167V178.5H98"/><path class="tr" pathLength="1" d="M98 177V185L106 177V185Z"/><path class="tr" pathLength="1" d="M102 181V173"/><path class="tr" pathLength="1" d="M99.5 173H108"/><path class="tr" pathLength="1" d="M106 178.5H111"/><path class="tr" pathLength="1" d="M106 183.5H111"/><path class="tr" pathLength="1" d="M111 177h2v8h-2Z"/><path class="tr" pathLength="1" d="M57 161h10v4h-10Z"/><path class="tr" pathLength="1" d="M59.5 165h5v40h-5Z"/><path class="tr" pathLength="1" d="M61.2 205V210"/><path class="tr" pathLength="1" d="M62.8 205V210"/><path class="tr" pathLength="1" d="M56 210h12v3h-12Z"/><path class="tr" pathLength="1" d="M113 161h10v4h-10Z"/><path class="tr" pathLength="1" d="M115.5 165h5v40h-5Z"/><path class="tr" pathLength="1" d="M117.2 205V210"/><path class="tr" pathLength="1" d="M118.8 205V210"/><path class="tr" pathLength="1" d="M112 210h12v3h-12Z"/><path class="tr" pathLength="1" d="M30 213H160"/><path class="tr f" pathLength="1" d="M50 66H90"/><path class="tr f" pathLength="1" d="M50 156H90"/><path class="tr f" pathLength="1" d="M104 32V42"/><path class="tr f" pathLength="1" d="M108 32V42"/><path class="tr f" pathLength="1" d="M112 32V42"/></g><g class="obj" style="--d:0.9s;--t:1.3s"><path class="tr" pathLength="1" d="M50 278a40 40 0 1 0 80 0a40 40 0 1 0 -80 0"/><path class="tr" pathLength="1" d="M76 270h28v16h-28Z"/><path class="tr" pathLength="1" d="M80 271h20v14h-20Z"/><path class="tr" pathLength="1" d="M100 273h18v10h-18Z"/><path class="tr" pathLength="1" d="M118 274h2v8h-2Z"/><path class="tr" pathLength="1" d="M51 278a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/><path class="tr" pathLength="1" d="M53 278a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path class="tr" pathLength="1" d="M69.3 278a1.2 1.2 0 1 0 2.4 0a1.2 1.2 0 1 0 -2.4 0"/><path class="tr f" pathLength="1" d="M104 273V283"/><path class="tr f" pathLength="1" d="M108 273V283"/><path class="tr f" pathLength="1" d="M112 273V283"/></g><g class="obj" style="--d:1.2s;--t:1.2s"><path class="tr" pathLength="1" d="M192 36V102"/><path class="tr" pathLength="1" d="M196 36V102"/><path class="tr" pathLength="1" d="M218 36V102"/><path class="tr" pathLength="1" d="M222 36V102"/><path class="tr f" pathLength="1" d="M188 36L193 33.5L198 38.5L203 33.5L208 38.5L213 33.5L218 38.5L223 33.5L226 36"/><path class="tr f" pathLength="1" d="M188 102L193 99.5L198 104.5L203 99.5L208 104.5L213 99.5L218 104.5L223 99.5L226 102"/><path class="tr f" pathLength="1" d="M207 39Q216 41 207 43Q198 45 207 47Q216 49 207 51Q198 53 207 55Q216 57 207 59Q198 61 207 63Q216 65 207 67Q198 69 207 71Q216 73 207 75Q198 77 207 79Q216 81 207 83Q198 85 207 87Q216 89 207 91Q198 93 207 95"/></g><g class="obj tabla" style="--d:1.0s;--t:1.1s"><path class="tr f" pathLength="1" d="M168 131h114v62h-114Z"/><path class="tr f" pathLength="1" d="M180 131V193"/><path class="tr f" pathLength="1" d="M266 131V193"/><path class="tr f" pathLength="1" d="M168 139H282"/><path class="tr f" pathLength="1" d="M168 148H282"/><path class="tr f" pathLength="1" d="M168 157H282"/><path class="tr f" pathLength="1" d="M168 166H282"/><path class="tr f" pathLength="1" d="M168 175H282"/><path class="tr f" pathLength="1" d="M168 184H282"/><path class="tr f" pathLength="1" d="M168 306h114v16h-114Z"/><path class="tr f" pathLength="1" d="M168 314H282"/><path class="tr f" pathLength="1" d="M184 306V322"/><path class="tr f" pathLength="1" d="M260 306V322"/></g><g class="ap eje" style="--d:1.6s"><path d="M90 24V220"/><path d="M96 37H124"/><path d="M44 278H136"/><path d="M90 232V324"/></g><g class="ap oculta" style="--d:1.7s"><path d="M67 119.5H89"/><path d="M71 143.5H89"/><path d="M54 278a36 36 0 1 0 72 0a36 36 0 1 0 -72 0"/><path d="M59.5 247.5h5v5h-5Z"/><path d="M59.5 303.5h5v5h-5Z"/><path d="M115.5 247.5h5v5h-5Z"/><path d="M115.5 303.5h5v5h-5Z"/></g><g class="ap" style="--d:1.8s"><path class="rayado" d="M90 50A40 16 0 0 1 130 66V156A40 12 0 0 1 90 168V165A36 9 0 0 0 126 156V66A36 12 0 0 0 90 54Z"/><path class="rayado" d="M192 36h4v66h-4Z"/><path class="rayado" d="M218 36h4v66h-4Z"/><path class="f" d="M33 213l-3 4M39 213l-3 4M45 213l-3 4M51 213l-3 4M57 213l-3 4M63 213l-3 4M69 213l-3 4M75 213l-3 4M81 213l-3 4M87 213l-3 4M93 213l-3 4M99 213l-3 4M105 213l-3 4M111 213l-3 4M117 213l-3 4M123 213l-3 4M129 213l-3 4M135 213l-3 4M141 213l-3 4M147 213l-3 4M153 213l-3 4M159 213l-3 4"/></g><g class="ap cota" style="--d:2.0s"><path class="dim" d="M50 22H130" marker-start="url(#ph-fl)" marker-end="url(#ph-fl)"/><path d="M50 64V19M130 64V19"/><text x="90" y="20.2" class="t-cota" text-anchor="middle">A</text><path class="dim" d="M152 30V213" marker-start="url(#ph-fl)" marker-end="url(#ph-fl)"/><path d="M121 30H155"/><text x="154.5" y="124" class="t-cota">B</text><path class="dim" d="M140 66V156" marker-start="url(#ph-fl)" marker-end="url(#ph-fl)"/><path d="M132 66H143M132 156H143"/><text x="142.2" y="113" class="t-cota">C</text><path class="dim" d="M140 181V213" marker-start="url(#ph-fl)" marker-end="url(#ph-fl)"/><path d="M114 181H143"/><text x="142.2" y="199" class="t-cota">D</text><path class="dim" d="M140 250V306" marker-start="url(#ph-fl)" marker-end="url(#ph-fl)"/><path d="M121 250H143M121 306H143"/><text x="142.2" y="280" class="t-cota">E</text></g><g class="ap" style="--d:2.15s"><path class="f" d="M80 37L38.2 36.09"/><circle class="punto" cx="80" cy="37" r=".8"/><path class="globo" d="M29.8 36a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0 -8.4 0"/><text x="34" y="37.55" class="t-globo" text-anchor="middle">1</text><path class="f" d="M52 47L38.14 49.31"/><circle class="punto" cx="52" cy="47" r=".8"/><path class="globo" d="M29.8 50a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0 -8.4 0"/><text x="34" y="51.55" class="t-globo" text-anchor="middle">2</text><path class="f" d="M57 86L38.2 86"/><circle class="punto" cx="57" cy="86" r=".8"/><path class="globo" d="M29.8 86a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0 -8.4 0"/><text x="34" y="87.55" class="t-globo" text-anchor="middle">3</text><path class="f" d="M105 119L107.23 107.13"/><circle class="punto" cx="105" cy="119" r=".8"/><path class="globo" d="M103.8 103a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0 -8.4 0"/><text x="108" y="104.55" class="t-globo" text-anchor="middle">4</text><path class="f" d="M102 185.5L100.72 192.86"/><circle class="punto" cx="102" cy="185.5" r=".8"/><path class="globo" d="M95.8 197a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0 -8.4 0"/><text x="100" y="198.55" class="t-globo" text-anchor="middle">5</text><path class="f" d="M59.5 207L38.15 203.65"/><circle class="punto" cx="59.5" cy="207" r=".8"/><path class="globo" d="M29.8 203a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0 -8.4 0"/><text x="34" y="204.55" class="t-globo" text-anchor="middle">6</text><path class="llamada" d="M120.5 111a7.5 7.5 0 1 0 15 0a7.5 7.5 0 1 0 -15 0"/><text x="128" y="101" class="t-peq" text-anchor="middle">DET. 1</text></g><g class="ap textos" style="--d:2.3s"><text x="48" y="12.4" class="t-zona" text-anchor="middle">1</text><text x="48" y="390.4" class="t-zona" text-anchor="middle">1</text><text x="116" y="12.4" class="t-zona" text-anchor="middle">2</text><text x="116" y="390.4" class="t-zona" text-anchor="middle">2</text><text x="184" y="12.4" class="t-zona" text-anchor="middle">3</text><text x="184" y="390.4" class="t-zona" text-anchor="middle">3</text><text x="252" y="12.4" class="t-zona" text-anchor="middle">4</text><text x="252" y="390.4" class="t-zona" text-anchor="middle">4</text><text x="11" y="61.8" class="t-zona" text-anchor="middle">A</text><text x="289" y="61.8" class="t-zona" text-anchor="middle">A</text><text x="11" y="154.8" class="t-zona" text-anchor="middle">B</text><text x="289" y="154.8" class="t-zona" text-anchor="middle">B</text><text x="11" y="247.8" class="t-zona" text-anchor="middle">C</text><text x="289" y="247.8" class="t-zona" text-anchor="middle">C</text><text x="11" y="340.8" class="t-zona" text-anchor="middle">D</text><text x="289" y="340.8" class="t-zona" text-anchor="middle">D</text><text x="90" y="225.5" class="t-vista" text-anchor="middle">ALZADO · MEDIO CORTE</text><text x="90" y="333.5" class="t-vista" text-anchor="middle">PLANTA</text><text x="168" y="26" class="t-vista">DETALLE 1 · PARED</text><text x="282" y="26" class="t-peq" text-anchor="end">ESC 2:1</text><text x="180" y="71.4" class="t-peq" text-anchor="middle">LECHE</text><path class="f" d="M194 48L228 45"/><circle class="punto" cx="194" cy="48" r=".8"/><text x="230.5" y="46.3" class="t-et">Pared interior</text><text x="230.5" y="51.3" class="t-peq">pulido sanitario</text><path class="f" d="M207 70L228 70"/><circle class="punto" cx="207" cy="70" r=".8"/><text x="230.5" y="71.3" class="t-et">Aislamiento</text><path class="f" d="M220 92L228 94"/><circle class="punto" cx="220" cy="92" r=".8"/><text x="230.5" y="95.3" class="t-et">Pared exterior</text><text x="168" y="127.5" class="t-vista">LISTA DE PARTES</text><text x="174" y="136.6" class="t-cab" text-anchor="middle">N.º</text><text x="183" y="136.6" class="t-cab">DESCRIPCIÓN</text><text x="274" y="136.6" class="t-cab" text-anchor="middle">CANT.</text><text x="174" y="145" class="t-fila" text-anchor="middle">1</text><text x="183" y="145" class="t-fila">Motorreductor del agitador</text><text x="274" y="145" class="t-fila" text-anchor="middle">1</text><text x="174" y="154" class="t-fila" text-anchor="middle">2</text><text x="183" y="154" class="t-fila">Tapa de inspección</text><text x="274" y="154" class="t-fila" text-anchor="middle">1</text><text x="174" y="163" class="t-fila" text-anchor="middle">3</text><text x="183" y="163" class="t-fila">Tablero de temperatura</text><text x="274" y="163" class="t-fila" text-anchor="middle">1</text><text x="174" y="172" class="t-fila" text-anchor="middle">4</text><text x="183" y="172" class="t-fila">Agitador de paletas</text><text x="274" y="172" class="t-fila" text-anchor="middle">1</text><text x="174" y="181" class="t-fila" text-anchor="middle">5</text><text x="183" y="181" class="t-fila">Válvula sanitaria de descarga</text><text x="274" y="181" class="t-fila" text-anchor="middle">1</text><text x="174" y="190" class="t-fila" text-anchor="middle">6</text><text x="183" y="190" class="t-fila">Pata regulable</text><text x="274" y="190" class="t-fila" text-anchor="middle">4</text><text x="168" y="207.5" class="t-vista">NOTAS</text><text x="168" y="216" class="t-fila" xml:space="preserve">1. Cotas A–E según la capacidad.</text><text x="168" y="223" class="t-fila" xml:space="preserve">2. Acero inoxidable AISI 304.</text><text x="168" y="230" class="t-fila" xml:space="preserve">3. Uniones lisas y continuas.</text><text x="168" y="237" class="t-fila" xml:space="preserve">4. Medidas finales en la visita</text><text x="168" y="244" class="t-fila" xml:space="preserve">   técnica de Equinox.</text><text x="168" y="302.5" class="t-vista">REVISIONES</text><text x="176" y="311.6" class="t-cab" text-anchor="middle">REV.</text><text x="187" y="311.6" class="t-cab">DESCRIPCIÓN</text><text x="271" y="311.6" class="t-cab" text-anchor="middle">FECHA</text><text x="176" y="319.6" class="t-fila" text-anchor="middle">A</text><text x="187" y="319.6" class="t-fila">Emisión para cotización</text><text x="271" y="319.6" class="t-fila" text-anchor="middle">2026</text><text x="20" y="349" class="t-peq">INDUSTRIAS</text><text x="19.4" y="361.6" class="t-marca">EQUINOX</text><text x="20" y="368.6" class="t-peq">COLOMBIA</text><text x="20" y="378" class="t-peq">Copacabana · Antioquia</text><text x="96" y="346.5" class="t-rot">TÍTULO</text><text x="96" y="356.8" class="t-titulo">TANQUE DE ENFRIAMIENTO</text><text x="96" y="365.2" class="t-fila">Disposición general · 2.000 L</text><text x="96" y="372.2" class="t-fila">Acero inoxidable AISI 304</text><text x="96" y="380.6" class="t-peq">Plano de referencia · prototipo</text><text x="207" y="345" class="t-rot">ESCALA</text><text x="207" y="352.4" class="t-val">1:20</text><text x="248" y="345" class="t-rot">FORMATO</text><text x="248" y="352.4" class="t-val">A3</text><text x="207" y="360" class="t-rot">PLANO N.º</text><text x="207" y="367.4" class="t-val">TE-01</text><text x="248" y="360" class="t-rot">REV.</text><text x="248" y="367.4" class="t-val">A</text><text x="207" y="375" class="t-rot">UNIDADES</text><text x="207" y="382.4" class="t-val">mm</text><text x="248" y="375" class="t-rot">FECHA</text><text x="248" y="382.4" class="t-val">2026</text></g></svg>
         </div>
         <span class="mono">01</span><h3>Diseño</h3><p>Visita, medidas del espacio y plano de la línea.</p>
       </article>
@@ -307,17 +310,6 @@
         <span class="mono">04</span><h3>Instalación y arranque</h3><p>Montaje, puesta en marcha y orientación a tu personal.</p>
       </article>
     </div>
-  </div>
-</section>
-
-<!-- Hecho por Equinox: fotos reales -->
-<section class="seccion galeria-real" aria-labelledby="titulo-galeria" id="hecho-por-equinox">
-  <div class="contenedor">
-    <div class="seccion__cabeza revela">
-      <h2 id="titulo-galeria">Esto sale de nuestro taller.</h2>
-      <div style="justify-self:end;display:grid;gap:14px"><p class="lead">Equipos fabricados por Equinox en acero inoxidable. Toca uno para ver su ficha, su plano y cómo funciona en 3D.</p><p><span class="sello">Fotos reales</span></p></div>
-    </div>
-    <ul class="galeria-real__grid" data-galeria></ul>
   </div>
 </section>
 
@@ -341,31 +333,6 @@
   </div>
 </section>
 
-<!-- Asistente: cotizar conversando (abre el asistente de WhatsApp; la demostración se arma en main.js con datos reales de la línea) -->
-<section class="seccion noche cuadricula asistente-banda" id="asistente" aria-labelledby="titulo-asistente">
-  <div class="contenedor asistente-banda__grid">
-    <div class="revela">
-      <span class="rotulo">Asistente Equinox · por WhatsApp</span>
-      <h2 id="titulo-asistente" style="margin-top:12px">Cotiza conversando, en un minuto.</h2>
-      <p class="lead" style="margin-top:18px">Sin formularios largos: el asistente te pregunta qué produces y cuántos litros procesas, te muestra la línea sugerida y te deja hablando con un asesor de Equinox por WhatsApp, con todo escrito.</p>
-      <ol class="asistente-banda__pasos">
-        <li><span class="mono">01</span><strong>Cuéntale qué produces</strong><p>Con botones o con tus palabras.</p></li>
-        <li><span class="mono">02</span><strong>Mira tu línea sugerida</strong><p>Equipos y capacidades para tus litros.</p></li>
-        <li><span class="mono">03</span><strong>Sigue por WhatsApp</strong><p>Un asesor recibe tu mensaje listo.</p></li>
-      </ol>
-      <div class="cajetin__acciones" style="margin-top:28px">
-        <button type="button" class="btn btn--wa" data-asistente-abrir="cotizar">Hablar con el asistente <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-whatsapp-logo"/></svg></span></button>
-        <a class="btn btn--claro" href="#cotizar">Prefiero el formulario</a>
-      </div>
-    </div>
-    <figure class="asistente-banda__demo revela">
-      <img class="asistente-banda__robot" src="assets/img/asistente/notas.webp" alt="" width="455" height="420" loading="lazy" decoding="async">
-      <div class="asistente-banda__chat" data-demo-chat aria-hidden="true"></div>
-      <figcaption class="rotulo">Ejemplo de conversación con el asistente</figcaption>
-    </figure>
-  </div>
-</section>
-
 <!-- Casos -->
 <!-- Oculta mientras los casos sean de muestra: se muestra sola con MOSTRAR_CASOS = true en js/data.js -->
 <section class="seccion" id="casos" aria-labelledby="titulo-casos" data-seccion-casos hidden>
@@ -375,17 +342,6 @@
       <p class="lead">Así se cuentan los casos de éxito. Estos tres son de muestra y se reemplazan por proyectos reales de Equinox, con permiso de cada cliente.</p>
     </div>
     <div class="casos__grid" data-casos></div>
-  </div>
-</section>
-
-<!-- Equipos: adelanto por línea de proceso; el catálogo completo (con fichas y renders) está en equipos.html -->
-<section class="seccion cuadricula" id="equipos" aria-labelledby="titulo-equipos">
-  <div class="contenedor">
-    <div class="seccion__cabeza revela">
-      <h2 id="titulo-equipos">19 equipos en 6 líneas de proceso.</h2>
-      <div style="justify-self:end;display:grid;gap:16px"><p class="lead">Capacidades del catálogo de Equinox, con ficha, plano y modelo 3D para cada equipo. Entra por la línea que te interesa y agrega a tu cotización.</p><p><a class="btn" href="equipos.html">Ver los 19 equipos <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a></p></div>
-    </div>
-    <ul class="lineas-adelanto" data-lineas-adelanto></ul>
   </div>
 </section>
 
@@ -420,14 +376,18 @@
 <section class="cotizar noche cuadricula" id="cotizar" aria-labelledby="titulo-cotizar">
   <div class="contenedor cotizar__grid">
     <div class="cotizar__intro">
-      <h2 id="titulo-cotizar">Cuéntanos tu proyecto. Te respondemos con una propuesta técnica.</h2>
-      <p class="lead">Cinco pasos cortos. Lo que respondas aquí lo recibe un ingeniero antes de llamarte.</p>
+      <h2 id="titulo-cotizar">Cuéntanos tu proyecto.</h2>
+      <p class="lead">Te respondemos con una propuesta técnica. Son cinco pasos cortos y lo que respondas lo recibe un ingeniero antes de llamarte.</p>
       <ul class="garantias">
         <li><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-clock"/></svg><span>Primera respuesta en menos de 1 hora hábil.</span></li>
         <li><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-wrench"/></svg><span>Revisión técnica de tu solicitud, no un mensaje automático.</span></li>
         <li><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-shield-check"/></svg><span>Tu solicitud queda registrada aunque no abras WhatsApp.</span></li>
       </ul>
       <p class="rotulo">Compromisos propuestos para Equinox</p>
+      <div class="cotizar__conversar">
+        <p><strong>¿Prefieres conversar?</strong> El asistente te hace las mismas preguntas y te deja hablando con un asesor por WhatsApp.</p>
+        <button type="button" class="btn btn--wa btn--pequeno" data-asistente-abrir="cotizar">Hablar con el asistente <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-whatsapp-logo"/></svg></span></button>
+      </div>
     </div>
 
     <form class="formulario" id="formulario" novalidate>
@@ -563,5 +523,6 @@
 <script type="module" src="js/asistente.js"></script>
 <script type="module" src="js/intro.js"></script>
 <script type="module" src="js/main.js"></script>
+<script type="module" src="js/carrito.js"></script>
 </body>
 </html>

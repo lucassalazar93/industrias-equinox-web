@@ -73,6 +73,8 @@ const OMITIR = /\b(omitir|omite|saltar|salta|prefiero no|no quiero (decir|dar)|s
 const RISA = /^(ja|je|ji|jsj|xd|lol)+\b/;
 // Alcance de la cotización: toda la línea o solo algunos equipos
 const TODO = /\b(toda|todo|todos|todas|completa|completo|entera)\b/;
+// "agregar otro", "añadir una prensa", "súmale un molde", "uno más": quiere sumar equipos a la lista
+const AGREGAR = /\b(agreg\w*|anad\w*|adicion\w*|sumar|sumale|sumalo|sumemos|incluir|inclui\w*|incluy\w*|uno mas|otro mas|otro equipo|otros equipos|mas equipos)\b/;
 const SOLO = /\b(solo|sola|solamente|unicamente|nada mas|un equipo|algunos|algunas|ciertos)\b/;
 const COMO_ESTAS = /\b(como (estas|esta|vas|va todo|te va)|que tal (estas|todo)|todo bien)\b/;
 const FUERA = /\b(chistes?|cuentame|cancion|canta\w*|clima|lluvia|que hora|hora es|futbol|partido|politic\w*|president\w*|novi[oa]s?|amor|tu edad|cuantos anos|que haces|aburrid\w*|juegos?|jugar|receta\w*|pelicula\w*|musica)\b/;
@@ -141,7 +143,7 @@ export function entender(original) {
     saludo: hay(n, SALUDO), gracias: hay(n, GRACIAS), despedida: hay(n, DESPEDIDA),
     afirma: hay(n, AFIRMA), niega: hay(n, NIEGA), noSe: hay(n, NO_SE), omitir: hay(n, OMITIR), risa: hay(n, RISA),
     sobreBot: hay(n, SOBRE_BOT), comoEstas: hay(n, COMO_ESTAS), fueraDeTema: hay(n, FUERA),
-    todo: hay(n, TODO), solo: hay(n, SOLO), numero: numeroDe(n),
+    todo: hay(n, TODO), solo: hay(n, SOLO), agregar: hay(n, AGREGAR), numero: numeroDe(n),
     pregunta: /[?¿]/.test(original) || hay(n, INTERROGATIVA),
     delTema: hay(n, DEL_TEMA),
     apl: (PRODUCTOS.find(([, re]) => re.test(n)) || [])[0] || null,

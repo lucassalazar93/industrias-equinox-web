@@ -1,4 +1,4 @@
-import { APLICACIONES, EQUIPOS, LINEAS, CASOS, MOSTRAR_CASOS, numeroWhatsApp, GALERIA, ORDEN_EQUIPOS, imagenEquipo } from './data.js';
+import { APLICACIONES, EQUIPOS, CASOS, MOSTRAR_CASOS, GALERIA, pintarContador } from './data.js';
 import { dibujarLinea } from './drawing.js';
 import { nuevoFolio, registrarSolicitud, filasSolicitud, urlWhatsApp, enviarSolicitud, descargarSolicitud, prepararSolicitud, puedeCompartirArchivos, pistaEnvio } from './solicitud.js';
 
@@ -22,7 +22,7 @@ const app = (id = estado.aplicacion) => APLICACIONES.find((a) => a.id === id);
 
 function actualizarContador() {
   const n = estado.equipos.size;
-  $$('[data-contador]').forEach((el) => { $('.mono', el).textContent = n; el.classList.toggle('con-items', n > 0); });
+  pintarContador(n);
   guardar('eqx-cotizacion', [...estado.equipos]);
   $$('[data-agregar]').forEach((b) => {
     const on = estado.equipos.has(b.dataset.agregar);
@@ -61,15 +61,9 @@ if (litrosPropios) { estado.litros = litrosPropios; rango.value = aRango(litrosP
 function marcarLitros(propios = false) {
   if (propios) { litrosPropios = estado.litros; guardar('eqx-litros', estado.litros); }
   celdaLitros.classList.toggle('pide', !litrosPropios);
-  $('[data-litros-pista]').textContent = litrosPropios ? 'Línea dimensionada para tus litros.' : 'Es un ejemplo: escribe tus litros para dimensionar la línea.';
+  $('[data-litros-pista]').textContent = litrosPropios ? 'Línea dimensionada para tus litros.' : 'Valor de ejemplo: escribe tus litros.';
 }
 marcarLitros();
-
-function mensajeLinea() {
-  const a = app();
-  const equipos = a.linea(estado.litros).map((x) => `• ${EQUIPOS[x.id].nombre} (${x.dato})`).join('\n');
-  return `Hola, Equinox. Quiero cotizar una línea de ${a.nombre.toLowerCase()} para ${fmt(estado.litros)} litros por día.\n${equipos}`;
-}
 
 function pintarLamina({ redibujar = true } = {}) {
   const a = app();
@@ -82,7 +76,6 @@ function pintarLamina({ redibujar = true } = {}) {
   $('[data-proyecto]').textContent = `Planta de ${a.corto.toLowerCase()}`;
   const kg = a.rendimiento ? ` · ≈ ${fmt(Math.round(estado.litros / a.rendimiento))} kg de queso al día` : '';
   $('[data-resumen]').textContent = `${linea.length} ${linea.length === 1 ? 'equipo sugerido' : 'equipos sugeridos'}${kg}`;
-  $('[data-wa-linea]').href = `https://wa.me/${numeroWhatsApp()}?text=${encodeURIComponent(mensajeLinea())}`;
   $$('[data-planta-linea]').forEach((a) => { a.href = `planta.html?apl=${estado.aplicacion}&L=${estado.litros}`; });
   // Llamado a ver la línea funcionando: abre Arma tu planta con el recorrido listo para reproducir
   const n = linea.length, seg = Math.round(n * 5.2 + Math.max(0, n - 1) * 2.2);
@@ -135,13 +128,6 @@ $('[data-cotizar-linea]').addEventListener('click', () => prellenar(estado.aplic
 pintarLamina();
 // Al terminar la entrada (placa de Equinox), el plano se vuelve a trazar ya a la vista
 document.addEventListener('eqx:intro-fin', () => pintarLamina());
-// El robot de la portada entra cuando termina la entrada de la placa (o al cargar, si no hay entrada)
-const robotPortada = $('.lamina__robot');
-if (robotPortada) {
-  const mostrarRobot = () => setTimeout(() => robotPortada.classList.add('listo'), 250);
-  if (document.documentElement.classList.contains('con-intro')) document.addEventListener('eqx:intro-fin', mostrarRobot, { once: true });
-  else mostrarRobot();
-}
 
 function elegirAplicacion(id, { irAlPlano = false } = {}) {
   estado.aplicacion = id;
@@ -200,35 +186,7 @@ if (MOSTRAR_CASOS) {
   $('[data-seccion-casos]').hidden = false;
 }
 
-// ---------- demostración del asistente ("Cotiza conversando"): conversación de ejemplo con la línea real de costeño ----------
-const demoChat = $('[data-demo-chat]');
-if (demoChat) {
-  const ej = APLICACIONES.find((x) => x.id === 'costeno'), L = 2000, lineaEj = ej.linea(L);
-  const piezas = [
-    ['bot', '¡Hola! Soy el asistente de <strong>Industrias Equinox</strong>. ¿Qué produces o quieres producir?'],
-    ['persona', 'Queso costeño'],
-    ['bot', '¿Cuántos litros de leche procesas al día?'],
-    ['persona', 'Unos 2.000 litros'],
-    ['bot', `Para queso costeño con ${fmt(L)} L/día, una línea típica lleva:<ol class="asistente__linea">${lineaEj.slice(0, 3).map((x) => `<li><b>${EQUIPOS[x.id].nombre}</b><span>${x.dato}</span></li>`).join('')}</ol><span class="asistente__suave">…y ${lineaEj.length - 3} equipos más.</span>`],
-  ];
-  demoChat.innerHTML = piezas.map(([quien, html], i) => `<div class="asistente__msj asistente__msj--${quien}" style="--i:${i}">${html}</div>`).join('')
-    + `<div class="asistente__borrador" style="--i:${piezas.length}"><span class="asistente__suave">Tu mensaje está listo</span><div class="asistente__acciones"><span class="btn btn--wa btn--pequeno">Abrir en WhatsApp <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-whatsapp-logo"/></svg></span></span></div></div>`;
-}
-
-// ---------- adelanto de equipos por línea (el catálogo completo está en equipos.html) ----------
-$('[data-lineas-adelanto]').innerHTML = LINEAS.map((l, i) => {
-  const ids = ORDEN_EQUIPOS.filter((id) => EQUIPOS[id].linea === l.id);
-  const fotos = ids.slice(0, 4).map((id) => `<img src="${imagenEquipo(id).src}" alt="" title="${EQUIPOS[id].nombre}" loading="lazy" decoding="async">`).join('');
-  const mas = ids.length > 4 ? `<span class="mono">+${ids.length - 4}</span>` : '';
-  const nombres = ids.slice(0, 3).map((id) => EQUIPOS[id].nombre).join(' · ') + (ids.length > 3 ? '…' : '');
-  return `<li class="revela"><a href="equipos.html#linea-${l.id}">
-    <span class="mono">L-${String(i + 1).padStart(2, '0')} · ${ids.length} ${ids.length === 1 ? 'equipo' : 'equipos'}</span>
-    <strong>${l.nombre}</strong>
-    <span class="lineas-adelanto__fotos" aria-hidden="true">${fotos}${mas}</span>
-    <span class="lineas-adelanto__nombres">${nombres}</span>
-    <span class="ver">Ver la línea <svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span>
-  </a></li>`;
-}).join('');
+document.addEventListener('eqx:cotizacion', (e) => { estado.equipos = new Set(e.detail); actualizarContador(); pintarEquiposForm(); });
 document.addEventListener('click', (e) => {
   const b = e.target.closest('[data-agregar]');
   if (!b) return;

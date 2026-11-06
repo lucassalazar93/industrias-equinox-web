@@ -29,7 +29,7 @@
   </nav>
   <div class="nav__acciones">
     <button class="tema-boton" type="button" data-tema-boton aria-pressed="false" aria-label="Cambiar a modo oscuro" title="Modo oscuro"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-moon"/></svg></button>
-    <a class="nav__cot" href="index.html#cotizar" data-contador><span class="txt">Cotización</span> <span class="mono">0</span></a>
+    <button type="button" class="nav__cot" data-contador data-carrito aria-label="Ver la cotización: sin equipos" aria-expanded="false" aria-controls="carrito-panel"><span class="nav__carrito" aria-hidden="true"><svg viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"><path d="M24 40H44L72 168H196M53 80H216L198 140H66"/><circle cx="86" cy="204" r="16"/><circle cx="182" cy="204" r="16"/></svg><span class="mono">0</span></span><span class="txt">Cotización</span></button>
     <a class="btn btn--pequeno" href="index.html#cotizar">Cotizar <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a>
     <button class="nav__menu" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-movil"><span></span><span></span><span></span></button>
   </div>
@@ -99,5 +99,6 @@
 <script type="module" src="js/tema.js"></script>
 <script type="module" src="js/asistente.js"></script>
 <script type="module" src="js/equipos.js"></script>
+<script type="module" src="js/carrito.js"></script>
 </body>
 </html>
