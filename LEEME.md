@@ -25,13 +25,36 @@ Luego abrir <http://localhost:8090>. Funciona sin internet: tipografías, Three.
   - Las chispas envejecen con el reloj real, para que en equipos lentos no queden pegadas sobre la placa pulida.
   - Probado en 1920 × 960 y en celular.
 - Portada en computador: título y plano a la izquierda, cajetín a la derecha, y el plano se ajusta al alto disponible para que todo quepa en la primera pantalla (probado en 1920 × 870, 1440 × 800 y 1366 × 657). Sobre el plano hay una leyenda ("Línea sugerida · producto · litros · equipos") que se marca en rojo al cambiar de producto. En celular, al tocar otro producto la página baja al plano y lo muestra desde el primer equipo.
-- Robot de la portada (escritorio, desde 1.181 px de ancho):
-  - El robot de Equinox con el tanque holográfico (`assets/img/asistente/holograma.webp`) queda entre el título y el cajetín, apuntando hacia donde se configura la línea, con el rótulo "Asistente Equinox · Pregúntame por tu planta".
-  - Entra al terminar la entrada de la placa y flota suave.
-  - Al tocarlo abre el asistente en "cotizar".
-  - Está en posición absoluta: no mueve el plano, que sigue cabiendo en la primera pantalla. Medido en 1920 × 1000, 1440 × 800, 1366 × 657, 1280 × 720 y 1200 × 760, sin tocar el título ni el cajetín.
-  - En pantallas medianas y en celular no hay espacio al lado del título y se oculta; el asistente sigue en su botón de la esquina.
-- `index.html`: portada con el plano interactivo (cada equipo dibujado abre su ficha), soluciones por producto, "Así trabaja una línea en planta" (4 tomas de video real de una línea de mozzarella, en fila deslizable en celular, con botón a esa línea en 3D), tanque 3D en corte, fábrica, galería de fotos reales, banda "Arma tu planta", "Cotiza conversando" (banda noche que presenta el asistente: 3 pasos, botón "Hablar con el asistente" y una conversación de ejemplo que se anima al aparecer, armada en `main.js` con la línea real de costeño a 2.000 L), casos (ocultos), adelanto de equipos por línea, dossier de entrega, cotizador en 5 pasos, preguntas (con el gancho al asistente) y contacto.
+- `index.html`: portada con el plano interactivo (cada equipo dibujado abre su ficha), soluciones por producto, "Así trabaja una línea en planta" (4 tomas de video real de una línea de mozzarella, en fila deslizable en celular, con botón a esa línea en 3D), galería de fotos reales (con "Ver los 19 equipos"), tanque 3D en corte, fábrica, banda "Arma tu planta", casos (ocultos), dossier de entrega, cotizador en 5 pasos (con la opción de hacerlo conversando con el asistente), preguntas (con el gancho al asistente) y contacto.
+
+Revisión para presentar (2026-11-06, pedida por Lucas: la página se sentía saturada y el robot también):
+
+- Primera pantalla:
+  - Sin el robot del tanque holográfico. El robot queda solo en el ícono del asistente de la esquina, que saluda al abrir.
+  - El cajetín deja dos acciones: "Cotizar esta línea" (principal) y "Ver esta planta funcionando en 3D". Se quitaron los enlaces "Armar en 3D" y "WhatsApp" del cajetín: repetían el botón de 3D, la banda "Arma tu planta" y el ícono del asistente.
+  - Mientras los litros sean de ejemplo, la celda ya no tiene marco rojo (parecía un error). Queda el subrayado rojo de cota en el número y la pista "Valor de ejemplo: escribe tus litros." en gris. Lo mismo en Arma tu planta.
+- El saludo del asistente se recoge solo cuando la persona baja más de 160 px por la página y deja el "1" en el ícono. Antes seguía encima del contenido hasta 16 s; en celular tapaba casi media pantalla.
+- Secciones retiradas de la portada (recuperables desde el commit d635a6e):
+  - "Cotiza conversando": repetía el ícono del asistente. En su lugar, el cotizador tiene "¿Prefieres conversar?" con el botón "Hablar con el asistente".
+  - "19 equipos en 6 líneas": repetía Soluciones y el menú Equipos. La galería de fotos reales lleva ahora el botón "Ver los 19 equipos".
+- La galería de fotos reales subió justo después del video en planta: lo real (video y fotos) queda junto.
+- Título del cotizador más corto: "Cuéntanos tu proyecto." y el resto pasa al texto de entrada.
+- "Cotización" del menú ahora es un carrito (portada, Equipos y fichas). Sin equipos se ve el carrito y la palabra Cotización. Al agregar uno aparece el globo rojo con la cantidad y el carrito da un salto. En celular queda solo el carrito con su globo. Lo pinta `pintarContador()` en `js/data.js`, que también actualiza el nombre accesible ("Cotización: 5 equipos"). El carrito va dibujado en el HTML y no en `iconos.svg`, para que no dependa de una copia vieja del sprite en caché.
+- Al tocar el carrito se abre el panel "Tu cotización" (`js/carrito.js`, en portada, Equipos y fichas).
+  - Muestra cada equipo elegido con foto o render, código, nombre y capacidad; el nombre abre su ficha.
+  - La X quita un equipo. "Vaciar" pide un segundo toque.
+  - "Cotizar estos N equipos" lleva al formulario, que ya trae esos equipos marcados.
+  - Sin equipos explica cómo agregarlos y ofrece "Ver los 19 equipos".
+  - Al quitar equipos avisa con el evento `eqx:cotizacion`: la portada pone al día el formulario y Equipos sus botones +.
+  - Al abrirse recoge el saludo del asistente para no taparlo. Se cierra con Esc, con la X o tocando fuera.
+  - El número del carrito son los equipos guardados en este navegador (`eqx-cotizacion`). Se suman con el + del catálogo, con "Cotizar esta línea" (agrega los equipos de la línea sugerida) y desde Arma tu planta.
+- Fábrica, tarjeta "01 Diseño": el dibujo simple se cambió por una hoja de plano completa de un tanque de enfriamiento. Lleva alzado en medio corte, planta, detalle de la pared doble, cotas en letras A–E, globos, lista de partes, notas, revisiones y cajetín de Equinox.
+  - Las cotas van en letras, sin medidas: los valores reales se ponen cuando Equinox los entregue.
+  - Las partes y notas repiten solo lo que ya dice el sitio (AISI 304, uniones lisas, patas regulables, etc.).
+  - Se traza sola al aparecer la tarjeta. Con "menos movimiento" o al imprimir se ve completa de una vez.
+  - En celular la tarjeta queda cuadrada (las de video siguen 4:3) para que la hoja se lea.
+  - La genera `herramientas/hoja_plano.py`: para cambiarla, editar el script y correrlo con la ruta de `index.html`.
+- Portada a 1.440 px de ancho: de 16.900 a 14.800 px. En celular (375 px): de 21.700 a 19.000 px.
 
 Cambios del 2026-11-05, pedidos por Lucas:
 
@@ -115,7 +138,7 @@ En el prototipo, la solicitud se guarda solo en el navegador (`localStorage`, cl
 **Cómo llega a Equinox** (llega directo a su chat, pedido de Lucas tras la prueba en el celular):
 
 - **A qué número llega (pedido de Lucas, 2026-11-05):** todo lo de la web apunta a **un solo número**, `WHATSAPP` en `js/data.js`. Por ahora es el del dueño, +57 312 841 0099; cuando Equinox defina el número final, se cambia solo ahí.
-  - Usan ese número: solicitudes del formulario y del asistente, demás mensajes del asistente, botón WhatsApp de las fichas, cajetín "tu línea" de la portada, "Enviar por WhatsApp" del constructor 3D, código QR y fila WhatsApp de los PDF y de la propuesta de planta, botón del pie (muestra el número), "ayuda para elegir" en Equipos y barra del celular.
+  - Usan ese número: solicitudes del formulario y del asistente, demás mensajes del asistente, botón WhatsApp de las fichas, "Enviar por WhatsApp" del constructor 3D, código QR y fila WhatsApp de los PDF y de la propuesta de planta, botón del pie (muestra el número), "ayuda para elegir" en Equipos y barra del celular.
   - Los enlaces escritos en el HTML ya traen el número; `apuntarWhatsApp()` (al cargar `asistente.js`) los lleva al número vigente o al de prueba.
   - No cambian: los teléfonos para llamar del pie (310 725 0200 y 312 841 0099), la fila "Teléfono" de los PDF (310 725 0200) y el teléfono de los datos estructurados.
 - WhatsApp no deja adjuntar archivos desde un enlace (`wa.me` solo lleva texto), y compartir desde el celular no puede elegir el destinatario: la persona tenía que buscar el chat.
@@ -248,8 +271,29 @@ Probado en el recorrido (tanque y pasteurizador de cerca), en la vista general e
   - En la portada saluda **cada vez que se abre la página**, después de la entrada si la hay. Dice "¡Hola! Soy el asistente de Equinox. ¿Te ayudo a cotizar o a armar tu planta?" y ofrece: Cotizar mi planta, Ver una planta funcionando, Hablar con un asesor.
   - En Equipos y en las fichas saluda una vez por visita, para no interrumpir mientras se navega. En una ficha ofrece cotizar ese equipo.
 - **Las respuestas rápidas** abren el asistente justo en ese punto de la conversación.
-- **Si nadie lo toca:** el globo se recoge a los 16 s (se queda mientras el cursor o el foco están encima) vuelve la insignia y deja un "1" rojo con un pulso verde, que se borran al abrir el chat. Si se cierra con la X, no deja el "1".
+- **Si nadie lo toca:** el globo se recoge a los 16 s, o antes si la persona baja más de 160 px por la página (se queda mientras el cursor o el foco están encima). Vuelve la insignia y deja un "1" rojo con un pulso verde, que se borran al abrir el chat. Si se cierra con la X, no deja el "1".
 - **Con "menos movimiento" activado** en el sistema, el robot aparece sin rebote ni saludo con la mano.
+
+**El carrito de la cotización** (2026-11-06, pedido por Lucas: el asistente debe saber qué hay en el carrito)
+
+- Si hay equipos en el carrito y no hay conversación guardada, el saludo dice "Tienes N equipos en tu cotización" y ofrece "Cotizar mis N equipos".
+- Al empezar, el asistente muestra la lista del carrito y la primera opción es "Cotizar los N equipos de mi cotización". Un "sí" escrito también la elige.
+- Con esa opción pregunta quién es, producto y litros, y arma la cotización con los equipos del carrito sin preguntar capacidad uno por uno: toma la de la línea sugerida si el equipo está en ella; si no, queda "por definir".
+- Si elige otra cosa (por ejemplo, cotizar una planta), avisa que los equipos del carrito también van en la solicitud.
+- Al retomar ("Sigamos donde íbamos"), y antes de mostrar "Tu cotización va así", compara el carrito con el que vio la última vez. Si la persona agregó o quitó equipos mientras navegaba, lo dice ("Vi que en tu cotización agregaste… y quitaste…") y pone la lista al día. Solo quita los equipos que habían entrado desde el carrito.
+- Si la conversación ya terminó y el carrito cambia (o se vuelve a abrir el chat después del cambio), rehace el mensaje final con los equipos nuevos.
+- La solicitud (folio, PDF y texto de WhatsApp) siempre incluye los equipos del carrito que no estén ya en ella.
+- Va en los dos sentidos. Lo que se elige en el chat entra al carrito del menú: cada equipo que se suma y la línea completa si elige "Toda la línea". El contador salta y la portada y Equipos se ponen al día (botones + y formulario). El chat lo dice: "Tu cotización va así (también la ves en el carrito del menú)".
+- Si eligió toda la línea y luego quita equipos de ella en el carrito, la cotización del chat deja de ser la línea completa y queda con los que siguen en el carrito.
+- Agregar a la lista desde el chat:
+  - Con equipos en el carrito, la primera pregunta también ofrece "Agregar otro equipo a la lista".
+  - Se entienden frases escritas como "agregar otro", "añade una prensa", "súmale un molde", "uno más" o "incluir la marmita" (campo `agregar` en `asistente-texto.js`).
+  - Primero pregunta el equipo nuevo (línea y equipo, o directo si lo nombró), con los del carrito ya en la lista. Después hace las preguntas de siempre, y los equipos que no tenían capacidad toman la de la línea sugerida.
+  - Las mismas frases sirven en "¿Agregas otro equipo?", en "¿Qué quieres cotizar?" (va a otro equipo del catálogo) y con la solicitud ya lista: pregunta cuál, lo suma y rehace la solicitud.
+  - Si eligió toda la línea y después suma otro, la solicitud lleva la línea más ese equipo.
+  - Un equipo nombrado de pasada ("me interesa una prensa") también entra al carrito: "Lo sumo a tu cotización".
+- El panel del carrito tiene "O por WhatsApp, con el asistente", que abre el chat directo con esos equipos.
+- `pintarContador()` avisa con el evento `eqx:carrito-cambio` cada vez que cambia el carrito.
 
 **La conversación**
 
@@ -345,10 +389,10 @@ Están en `assets/img/asistente/` y salen de los PNG de `publicidad/` (2026-11-0
 | --- | --- | --- |
 | `avatar.webp` | Robot Equinox entre Acero y Chispas (insignia redonda), 192 px | Botón y cabecera del chat |
 | `saludo.webp` | ok!.png | Globo de saludo y primer mensaje |
-| `notas.webp` | Robot con portapapeles | Pregunta de nombre y empresa |
+| `notas.webp` | Robot con portapapeles | Pregunta de nombre y empresa en el chat |
 | `pulgar.webp` | constructor.png | Mensaje listo |
 | `pensativo.webp` | Robot pensativo con tanque | Gancho en Preguntas |
-| `holograma.webp` | Robot Equinox con Tanque Holográfico, 598 × 560 (74 KB) | Primera pantalla de la portada, junto al plano |
+| `holograma.webp` | Robot Equinox con Tanque Holográfico, 598 × 560 (74 KB) | Sin uso desde el 2026-11-06 (estaba en la primera pantalla; se quitó para despejarla) |
 | `soldador.webp` | Robot soldador de Industrias Equinox, sin la barra ni las chispas pintadas, 605 × 520 (58 KB) | Entrada de la portada: hace la soldadura de la placa |
 
 Sin usar todavía: los robots con laptop y de brazos cruzados (`aprobado.png`), y la hoja de 8 poses.

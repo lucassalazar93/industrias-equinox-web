@@ -21,6 +21,20 @@ export function numeroWhatsApp() {
 // 573128410099 → +57 312 841 0099
 export const textoWhatsApp = (n = numeroWhatsApp()) => n.length === 12 && n.startsWith('57') ? `+57 ${n.slice(2, 5)} ${n.slice(5, 8)} ${n.slice(8)}` : `+${n}`;
 // Lleva al número vigente los enlaces de WhatsApp escritos en el HTML y el número que se muestra ([data-wa-numero])
+// Carrito de la cotización en el menú: cantidad de equipos y un salto cuando se agrega uno
+let conteoAnterior = null;
+export function pintarContador(n) {
+  document.querySelectorAll('[data-contador]').forEach((el) => {
+    const num = el.querySelector('.mono');
+    if (num) num.textContent = n;
+    el.classList.toggle('con-items', n > 0);
+    el.setAttribute('aria-label', n ? `Ver la cotización: ${n} ${n === 1 ? 'equipo' : 'equipos'}` : 'Ver la cotización: sin equipos');
+    if (conteoAnterior !== null && n > conteoAnterior) { el.classList.remove('salta'); void el.offsetWidth; el.classList.add('salta'); }
+  });
+  // Aviso para quien lo necesite (el asistente pone al día su mensaje si la conversación ya terminó)
+  if (conteoAnterior !== null) document.dispatchEvent(new CustomEvent('eqx:carrito-cambio', { detail: n }));
+  conteoAnterior = n;
+}
 export function apuntarWhatsApp(raiz = document) {
   const n = numeroWhatsApp();
   raiz.querySelectorAll('a[href^="https://wa.me/"]').forEach((a) => { a.href = a.href.replace(/wa\.me\/\d+/, `wa.me/${n}`); });

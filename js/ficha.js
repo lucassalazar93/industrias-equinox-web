@@ -1,4 +1,4 @@
-import { EQUIPOS, CASOS, numeroWhatsApp } from './data.js';
+import { EQUIPOS, CASOS, numeroWhatsApp, pintarContador } from './data.js';
 import { crearTanque } from './tank3d.js';
 
 document.documentElement.classList.remove('sin-js');
@@ -16,8 +16,7 @@ boton.addEventListener('click', () => {
   menu.hidden = false; requestAnimationFrame(() => menu.classList.add('abierto')); boton.setAttribute('aria-expanded', 'true');
 });
 $$('a', menu).forEach((a) => a.addEventListener('click', cerrar));
-const enCot = leer('eqx-cotizacion', []).length;
-$$('[data-contador]').forEach((el) => { $('.mono', el).textContent = enCot; el.classList.toggle('con-items', enCot > 0); });
+pintarContador(leer('eqx-cotizacion', []).length);
 
 // Medidas de muestra: cilindro con altura de líquido ≈ diámetro
 const CAPACIDADES = [300, 500, 1000, 1500, 2000];

@@ -1,6 +1,6 @@
 // Página Equipos: una lámina por línea de proceso, índice fijo y regreso desde la ficha.
 // La ficha vuelve aquí con #eq-<id> (o por historial) para caer en el mismo equipo.
-import { EQUIPOS, LINEAS, ORDEN_EQUIPOS, imagenEquipo } from './data.js';
+import { EQUIPOS, LINEAS, ORDEN_EQUIPOS, imagenEquipo, pintarContador } from './data.js';
 
 document.documentElement.classList.remove('sin-js');
 const $ = (s, r = document) => r.querySelector(s);
@@ -60,7 +60,7 @@ $('[data-laminas]').innerHTML = lineas.map((l) => `
 // Cotización (misma clave que la portada y la ficha)
 const enCot = new Set(leer('eqx-cotizacion', []));
 function pintarCotizacion() {
-  $$('[data-contador]').forEach((el) => { $('.mono', el).textContent = enCot.size; el.classList.toggle('con-items', enCot.size > 0); });
+  pintarContador(enCot.size);
   $$('[data-agregar]').forEach((b) => {
     const on = enCot.has(b.dataset.agregar), nombre = EQUIPOS[b.dataset.agregar].nombre;
     b.setAttribute('aria-pressed', on);
@@ -70,6 +70,7 @@ function pintarCotizacion() {
   });
 }
 pintarCotizacion();
+document.addEventListener('eqx:cotizacion', (e) => { enCot.clear(); e.detail.forEach((id) => enCot.add(id)); pintarCotizacion(); });
 document.addEventListener('click', (e) => {
   const b = e.target.closest('[data-agregar]'); if (!b) return;
   const id = b.dataset.agregar;

@@ -4,7 +4,7 @@
 // lo que la persona escribe con sus palabras se pasa tal cual al asesor.
 // En el prototipo no se guarda nada nuevo; solo lee lo que la persona ya dejó en el sitio
 // (litros, equipos de la cotización y sus datos de contacto si los llenó antes).
-import { APLICACIONES, EQUIPOS, LINEAS, ORDEN_EQUIPOS, numeroWhatsApp, apuntarWhatsApp } from './data.js';
+import { APLICACIONES, EQUIPOS, LINEAS, ORDEN_EQUIPOS, numeroWhatsApp, apuntarWhatsApp, pintarContador } from './data.js';
 import { FICHAS } from './fichas.js';
 import { entender, pareceNombre, TEMAS, normalizar } from './asistente-texto.js';
 import { TIPOS_CLIENTE, PLAZOS, DEPARTAMENTOS, nuevoFolio, registrarSolicitud, textoSolicitud, enviarSolicitud, descargarSolicitud, prepararSolicitud, puedeCompartirArchivos, enlaceGuardado, pistaEnvio } from './solicitud.js';
@@ -20,6 +20,12 @@ const esperar = (ms) => new Promise((r) => setTimeout(r, reducido ? Math.min(ms,
 const escapar = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const icono = (id) => `<svg aria-hidden="true"><use href="${ICONOS}#${id}"/></svg>`;
 const minuscula = (t) => t.charAt(0).toLowerCase() + t.slice(1);
+// Carrito de la cotización (el del menú, js/carrito.js): el asistente lo lee para ofrecer cotizarlo,
+// lo pone al día al retomar la conversación y lo suma a la solicitud
+const enCarrito = () => leer('eqx-cotizacion', []).filter((id) => EQUIPOS[id]);
+const nombresDe = (ids) => { const n = ids.map((id) => minuscula(EQUIPOS[id].nombre)); return n.length > 1 ? `${n.slice(0, -1).join(', ')} y ${n.at(-1)}` : n[0] || ''; };
+const cuantosEquipos = (n) => (n === 1 ? 'un equipo' : `${n} equipos`);
+const listaCarrito = (ids) => `<ol class="asistente__linea">${ids.map((id) => `<li><a href="equipo.html?e=${id}">${escapar(EQUIPOS[id].nombre)}</a><span>${escapar(EQUIPOS[id].capacidad)}</span></li>`).join('')}</ol>`;
 
 // Contexto de la página: en la ficha de un equipo el asistente ofrece cotizar ese equipo
 const idEquipo = new URLSearchParams(location.search).get('e');
@@ -110,10 +116,23 @@ function saludar() {
   if (!panel.hidden) return;
   guardarSesion(claveSaludo, '1');
   aviso.hidden = true; raiz.classList.remove('avisando');
+  // Sin conversación guardada y con equipos en el carrito: el saludo ofrece cotizarlos
+  const n = enCarrito().length;
+  if (!iniciado && n && pagina !== 'equipo') {
+    cuerpoSaludo.querySelector('p').textContent = `Tienes ${cuantosEquipos(n)} en tu cotización. ¿Te ayudo a cotizar${n === 1 ? 'lo' : 'los'} por WhatsApp?`;
+    cuerpoSaludo.querySelector('.asistente__saludo-opciones').innerHTML = `<button type="button" data-saludo-ir="carrito">Cotizar ${n === 1 ? 'mi equipo' : `mis ${n} equipos`}</button>${saludoPagina.opciones.map(([v, t]) => `<button type="button" data-saludo-ir="${v}">${t}</button>`).join('')}`;
+  }
   raiz.classList.add('saludando');
   saludo.hidden = false; escribiendoSaludo.hidden = false; cuerpoSaludo.hidden = true;
   setTimeout(() => { escribiendoSaludo.hidden = true; cuerpoSaludo.hidden = false; }, reducido ? 0 : 1400);
   programarCierre(16000);
+  // Si la persona se pone a leer (baja por la página), el globo se recoge y deja el "1" en el ícono: no la persigue
+  const desde = scrollY;
+  const alBajar = () => {
+    if (saludo.hidden) return removeEventListener('scroll', alBajar);
+    if (!saludoEnUso && Math.abs(scrollY - desde) > 160) { removeEventListener('scroll', alBajar); cerrarSaludo({ dejarAviso: true }); }
+  };
+  addEventListener('scroll', alBajar, { passive: true });
 }
 function programarCierre(ms) {
   clearTimeout(temporizadorSaludo);
@@ -128,6 +147,10 @@ function cerrarSaludo({ dejarAviso = false } = {}) {
 if (document.documentElement.classList.contains('con-intro')) document.addEventListener('eqx:intro-fin', mostrarLanzador, { once: true });
 else mostrarLanzador();
 $('[data-saludo-cerrar]').addEventListener('click', (e) => { e.stopPropagation(); cerrarSaludo(); });
+document.addEventListener('eqx:carrito-abierto', () => cerrarSaludo({ dejarAviso: true }));
+// Si el carrito cambia con el chat abierto y la conversación ya terminada, el mensaje final se rehace con él
+// (en medio de una pregunta no se interrumpe: se pone al día en la siguiente lista de equipos o al retomar)
+document.addEventListener('eqx:carrito-cambio', () => { if (!panel.hidden && finalizado && !enCurso) revisarCarritoFinal(); });
 saludo.addEventListener('click', (e) => {
   const ir = e.target.closest('[data-saludo-ir]')?.dataset.saludoIr;
   // Con una conversación guardada el saludo ofrece seguirla o empezar de nuevo
@@ -153,6 +176,7 @@ function abrir(intencion) {
   lanzador.setAttribute('aria-expanded', 'true');
   if (!iniciado || intencion) conversar(intencion);
   else if (pendienteReanudar) { pendienteReanudar = false; conversar(null, { reanudar: true }); }
+  else if (finalizado && !enCurso) revisarCarritoFinal();
   guardarChat();
   requestAnimationFrame(() => (zonaOpciones.querySelector('button') || entrada).focus({ preventScroll: true }));
 }
@@ -277,7 +301,8 @@ function anotar(a, paso) {
   // En los pasos donde se eligen equipos, nombrarlos es responder: no se anotan aparte
   const nuevos = PASOS_EQUIPO.has(paso) ? [] : [...new Set(a.equipos.map((id) => equipoDeTexto(id, a)))].filter((id) => EQUIPOS[id] && !datos.equipos.has(id) && id !== equipoActual?.id);
   nuevos.forEach((id) => datos.equipos.add(id));
-  if (nuevos.length) notas.push(`${nuevos.length === 1 ? 'Ese equipo lo fabricamos' : 'Esos equipos los fabricamos'}: ${nuevos.map((id) => `<a href="equipo.html?e=${id}">${escapar(EQUIPOS[id].nombre)}</a> (${escapar(EQUIPOS[id].capacidad)})`).join(', ')}. Lo sumo a tu mensaje.`);
+  alCarrito(nuevos); // lo que nombra va en la solicitud, así que también al carrito del menú
+  if (nuevos.length) notas.push(`${nuevos.length === 1 ? 'Ese equipo lo fabricamos' : 'Esos equipos los fabricamos'}: ${nuevos.map((id) => `<a href="equipo.html?e=${id}">${escapar(EQUIPOS[id].nombre)}</a> (${escapar(EQUIPOS[id].capacidad)})`).join(', ')}. Lo sumo a tu cotización.`);
   a.temas.filter((t) => !datos.temas.has(t)).forEach((t) => { datos.temas.add(t); notas.push(RESPUESTA_TEMA[t]); });
   return notas;
 }
@@ -330,6 +355,13 @@ async function preguntar(html, opciones, { paso, interpretar = () => null, repre
 async function atenderSuelto(texto) {
   try {
     const a = entender(texto);
+    // "Agregar otro" con la solicitud ya lista: pregunta cuál, lo suma (y al carrito) y rehace la solicitud
+    if (a.agregar && !a.equipos.length && conSolicitud()) {
+      enCurso = true;
+      try { await agregarDelCatalogo(); } catch (err) { if (!(err instanceof Salto)) throw err; datos.pideAsesor = true; }
+      enCurso = false;
+      return cerrarConversacion();
+    }
     const antes = consultaLibre;
     const notas = anotar(a, 'final');
     for (const nota of notas) await bot(nota, { pausa: 650 });
@@ -422,7 +454,19 @@ async function pedirCapacidad(id) {
 async function sumarEquipo(id) {
   if (!EQUIPOS[id] || datos.seleccion.some((s) => s.id === id)) return;
   const enLinea = datos.linea?.find((x) => x.id === id);
-  datos.seleccion.push({ id, dato: enLinea ? enLinea.dato : await pedirCapacidad(id) });
+  datos.seleccion.push({ id, dato: enLinea ? enLinea.dato : await pedirCapacidad(id), carrito: true });
+  alCarrito([id]);
+}
+// Lo que se elige en el chat entra también al carrito del menú; la página se pone al día (contador, botones +, formulario)
+function alCarrito(ids) {
+  const actual = enCarrito();
+  const nuevos = ids.filter((id) => EQUIPOS[id] && !actual.includes(id));
+  if (!nuevos.length) return;
+  const lista = [...actual, ...nuevos];
+  try { localStorage.setItem('eqx-cotizacion', JSON.stringify(lista)); } catch { /* sin almacenamiento */ }
+  datos.carritoVisto = lista; // así al retomar no lo cuenta como un cambio hecho por fuera
+  pintarContador(lista.length);
+  document.dispatchEvent(new CustomEvent('eqx:cotizacion', { detail: lista }));
 }
 // Un equipo del catálogo: primero la línea, luego el equipo (o escrito directo: "prensa")
 async function agregarDelCatalogo() {
@@ -440,14 +484,53 @@ async function agregarDelCatalogo() {
   });
   await sumarEquipo(r2.v);
 }
+// Equipo que ya estaba en el carrito: entra sin preguntar capacidad (la de la línea sugerida si está en ella;
+// si no, queda por definir y la ajusta el ingeniero)
+function sumarDelCarrito(id) {
+  if (!EQUIPOS[id] || datos.seleccion.some((s) => s.id === id)) return;
+  const enLinea = datos.linea?.find((x) => x.id === id);
+  datos.seleccion.push({ id, dato: enLinea ? enLinea.dato : '', carrito: true });
+}
+// Si el carrito cambió desde la última vez que el asistente lo miró (la persona agregó o quitó equipos
+// mientras navegaba), la cotización del chat se pone al día y lo cuenta. Devuelve si hubo cambios.
+async function ponerAlDiaCarrito() {
+  if (!datos.hecho) return false;
+  const ahora = enCarrito();
+  if (!datos.carritoVisto) { datos.carritoVisto = ahora; return false; }
+  const visto = new Set(datos.carritoVisto);
+  const agregados = ahora.filter((id) => !visto.has(id));
+  const quitados = datos.carritoVisto.filter((id) => !ahora.includes(id) && EQUIPOS[id]);
+  datos.carritoVisto = ahora;
+  if (!agregados.length && !quitados.length) return false;
+  // Eligió toda la línea y luego quitó equipos de ella en el carrito: ya no es la línea completa, sino los que quedan
+  if (datos.alcance === 'linea' && quitados.some((id) => datos.linea?.some((x) => x.id === id))) {
+    datos.alcance = 'seleccion';
+    datos.seleccion = datos.linea.filter((x) => ahora.includes(x.id)).map((x) => ({ id: x.id, dato: x.dato, carrito: true }));
+  }
+  if (datos.alcance === 'seleccion') {
+    agregados.forEach(sumarDelCarrito);
+    datos.seleccion = datos.seleccion.filter((s) => !(s.carrito && quitados.includes(s.id)));
+  }
+  const partes = [];
+  if (agregados.length) partes.push(`agregaste <strong>${escapar(nombresDe(agregados))}</strong>`);
+  if (quitados.length) partes.push(`quitaste <strong>${escapar(nombresDe(quitados))}</strong>`);
+  await bot(`Vi que en tu cotización ${partes.join(' y ')}. Ya lo tengo en cuenta.`, { pausa: 400 });
+  guardarChat();
+  return true;
+}
+// Conversación ya terminada que se vuelve a abrir: si el carrito cambió, el mensaje final se rehace con él
+async function revisarCarritoFinal() {
+  if (await ponerAlDiaCarrito()) await cerrarConversacion({ silencioso: true });
+}
 // Muestra lo que va en la cotización y pregunta si agrega otro equipo, hasta que diga que no
 async function masEquipos() {
   for (;;) {
+    await ponerAlDiaCarrito();
     const lista = datos.seleccion.map((s) => `<li><a href="equipo.html?e=${s.id}">${escapar(EQUIPOS[s.id].nombre)}</a><span>${escapar(s.dato || 'por definir')}</span></li>`).join('');
-    const r = await preguntar(`Tu cotización va así:<ol class="asistente__linea">${lista}</ol>¿Agregas otro equipo?`, [{ v: 'no', t: 'No, eso es todo' }, { v: 'si', t: 'Sí, agregar otro' }], {
+    const r = await preguntar(`Tu cotización va así (también la ves en el carrito del menú):<ol class="asistente__linea">${lista}</ol>¿Agregas otro equipo?`, [{ v: 'no', t: 'No, eso es todo' }, { v: 'si', t: 'Sí, agregar otro' }], {
       paso: 'otro',
       repregunta: '¿Agregas otro equipo? Toca una opción o escríbeme cuál.',
-      interpretar: (a) => (a.equipos.length ? { v: 'directo', ids: a.equipos.map((x) => equipoDeTexto(x, a)) } : a.afirma ? { v: 'si' } : a.niega || a.todo ? { v: 'no' } : null),
+      interpretar: (a) => (a.equipos.length ? { v: 'directo', ids: a.equipos.map((x) => equipoDeTexto(x, a)) } : a.afirma || a.agregar ? { v: 'si' } : a.niega || a.todo ? { v: 'no' } : null),
     });
     if (r.v === 'no') return;
     if (r.v === 'directo') { for (const id of r.ids) await sumarEquipo(id); } else await agregarDelCatalogo();
@@ -461,9 +544,15 @@ async function elegirAlcance() {
     const r = await preguntar('¿Qué quieres cotizar?', [{ v: 'linea', t: `Toda la línea (${n} equipos)` }, { v: 'elegir', t: 'Solo algunos equipos' }, { v: 'catalogo', t: 'Otro equipo del catálogo' }], {
       paso: 'alcance',
       repregunta: '¿Toda la línea o solo algunos equipos? Toca una opción o escríbeme cuáles.',
-      interpretar: (a) => (a.todo ? { v: 'linea' } : a.equipos.length ? { v: 'directo', ids: a.equipos.map((x) => equipoDeTexto(x, a)) } : a.solo ? { v: 'elegir' } : null),
+      interpretar: (a) => (a.todo ? { v: 'linea' } : a.equipos.length ? { v: 'directo', ids: a.equipos.map((x) => equipoDeTexto(x, a)) } : a.agregar ? { v: 'catalogo' } : a.solo ? { v: 'elegir' } : null),
     });
-    if (r.v === 'linea') { datos.alcance = 'linea'; guardarChat(); return; }
+    if (r.v === 'linea') {
+      datos.alcance = 'linea';
+      alCarrito(datos.linea.map((x) => x.id));
+      guardarChat();
+      await bot(`Listo: ${n === 1 ? 'el equipo de la línea queda' : `los ${n} equipos de la línea quedan`} en tu cotización y en el carrito del menú.`, { pausa: 300 });
+      return;
+    }
     datos.alcance = 'seleccion'; datos.metodo = r.v; guardarChat();
     if (r.v === 'directo') for (const id of r.ids) await sumarEquipo(id);
   }
@@ -647,37 +736,58 @@ async function conversar(intencionInicial, { reanudar = false } = {}) {
     mensajes.innerHTML = ''; consultaLibre = '';
     entrada.placeholder = 'Escribe tu pregunta…';
     const perfil = leer('eqx-interesado', null);
+    // "carrito": cotizar los equipos del carrito (desde el saludo, el panel del carrito o la primera pregunta)
+    const desdeCarrito = intencionInicial === 'carrito';
     datos = {
-      intencion: intencionInicial || null, apl: null, otroProducto: '', litros: null, tipo: '', plazo: '', departamento: '', municipio: '',
+      intencion: desdeCarrito ? 'equipos' : intencionInicial || null, desdeCarrito, carritoVisto: enCarrito(), apl: null, otroProducto: '', litros: null, tipo: '', plazo: '', departamento: '', municipio: '',
       nombre: perfil?.nombre || '', empresa: perfil?.empresa || '', celular: perfil?.celular || '', correo: perfil?.correo || '', nota: '',
       equipos: new Set(), temas: new Set(), pideAsesor: false, seleccion: [], alcance: null, metodo: null, linea: null, equipoFicha: null, folio: null, hecho: new Set(),
     };
   }
   try {
-    if (reanudar) await bot('Sigamos donde íbamos.', { pausa: 450, marca: 'reanudar' });
-    else {
+    if (reanudar) {
+      await bot('Sigamos donde íbamos.', { pausa: 450, marca: 'reanudar' });
+      await ponerAlDiaCarrito();
+    } else {
       const primerNombre = datos.nombre.split(' ')[0];
       await bot(`¡Hola${primerNombre ? `, ${escapar(primerNombre)}` : ''}! Soy el asistente de <strong>Industrias Equinox</strong>. Te ayudo a preparar tu solicitud y te paso con un asesor por WhatsApp.`, { pose: 'saludo' });
+      if (datos.desdeCarrito && datos.carritoVisto.length) await bot(`Vamos con ${datos.carritoVisto.length === 1 ? 'el equipo' : `los ${datos.carritoVisto.length} equipos`} de tu cotización:${listaCarrito(datos.carritoVisto)}`, { pausa: 500 });
     }
 
     if (!datos.intencion) {
+      const carrito = datos.carritoVisto;
+      if (carrito.length) await bot(`Veo que tienes ${cuantosEquipos(carrito.length)} en tu cotización:${listaCarrito(carrito)}`, { pausa: 500 });
       const opciones = Object.entries(INTENCIONES).map(([v, t]) => ({ v, t }));
+      if (carrito.length) opciones.unshift({ v: 'carrito', t: carrito.length === 1 ? 'Cotizar el equipo de mi cotización' : `Cotizar los ${carrito.length} equipos de mi cotización` }, { v: 'carrito-mas', t: 'Agregar otro equipo a la lista' });
       if (equipoActual) opciones.unshift({ v: 'equipo', t: `Cotizar ${minuscula(equipoActual.nombre)}` });
       const r = await preguntar(equipoActual ? `Estás viendo la ficha de <strong>${escapar(equipoActual.nombre)}</strong>. ¿En qué te ayudo?` : '¿En qué te ayudo hoy? Toca una opción o escríbeme con tus palabras.', opciones, {
         paso: 'intencion',
         repregunta: '¿En qué te ayudo? Toca una opción o cuéntame con tus palabras qué necesitas.',
-        // "quiero cotizar una prensa" → equipos; "una planta de costeño" → planta
-        interpretar: (a) => (a.equipos.length && !a.apl && !a.todo && (!a.intencion || a.intencion === 'cotizar') ? { v: 'equipos' }
+        // "quiero cotizar una prensa" → equipos; "una planta de costeño" → planta; "sí" con equipos en el carrito → esos
+        // "agregar otro" / "añade una prensa" con equipos en el carrito → la lista del carrito más el equipo nuevo
+        interpretar: (a) => (carrito.length && (a.agregar || /\botr[oa]s?\b/.test(a.n)) ? { v: 'carrito-mas', ids: a.equipos.map((x) => equipoDeTexto(x, a)) }
+          : a.agregar && !a.apl ? { v: 'equipos' }
+          : a.equipos.length && !a.apl && !a.todo && (!a.intencion || a.intencion === 'cotizar') ? { v: 'equipos' }
           : a.intencion ? { v: a.intencion }
           : a.apl || a.litros ? { v: 'cotizar' }
-          : equipoActual && a.afirma ? { v: 'equipo' } : null),
+          : equipoActual && a.afirma ? { v: 'equipo' }
+          : carrito.length && (a.afirma || a.todo) ? { v: 'carrito' } : null),
       });
-      datos.intencion = r.v;
+      datos.desdeCarrito = r.v === 'carrito' || r.v === 'carrito-mas';
+      datos.intencion = datos.desdeCarrito ? 'equipos' : r.v;
+      if (r.v === 'carrito-mas') { datos.agregarOtro = true; datos.agregarIds = (r.ids || []).filter((id) => EQUIPOS[id]); }
       if (r.v === 'equipo') datos.equipoFicha = equipoActual.id;
       guardarChat();
+      if (carrito.length && !datos.desdeCarrito && conSolicitud()) await bot('Los equipos de tu cotización también van en la solicitud.', { pausa: 300 });
     }
 
     if (datos.intencion === 'humano') return cerrarConversacion();
+    // "Agregar otro equipo": primero el equipo nuevo (los del carrito ya van en la lista); después las preguntas de siempre
+    if (datos.agregarOtro && !hecho('agregar')) {
+      enCarrito().forEach(sumarDelCarrito);
+      if (datos.agregarIds?.length) { for (const id of datos.agregarIds) await sumarEquipo(id); } else await agregarDelCatalogo();
+      marcar('agregar');
+    }
     // Quién es (como el paso 1 del formulario)
     if (conSolicitud() && !hecho('tipo')) {
       const r = await preguntar('Para preparar tu solicitud: ¿quién eres?', TIPOS_CLIENTE.map(([t, d]) => ({ v: t, t: `${t} · ${d}` })), {
@@ -695,13 +805,16 @@ async function conversar(intencionInicial, { reanudar = false } = {}) {
       // la capacidad de cada equipo sale de la línea sugerida cuando está en ella.
       const a = APLICACIONES.find((x) => x.id === datos.apl);
       if (a && !datos.linea) datos.linea = a.linea(datos.litros || 2000);
+      // Los equipos que entraron antes de saber producto y litros toman la capacidad de la línea sugerida
+      datos.seleccion.forEach((s) => { if (!s.dato) s.dato = datos.linea?.find((x) => x.id === s.id)?.dato || ''; });
       datos.alcance = 'seleccion';
       if (!datos.seleccion.length) {
         if (datos.intencion === 'equipo') await sumarEquipo(datos.equipoFicha || equipoActual?.id);
         else {
           const yaDichos = [...datos.equipos]; datos.equipos.clear();
+          if (datos.desdeCarrito) { enCarrito().forEach(sumarDelCarrito); guardarChat(); }
           for (const id of yaDichos) await sumarEquipo(id);
-          if (!yaDichos.length) await agregarDelCatalogo();
+          if (!datos.seleccion.length) await agregarDelCatalogo();
         }
       }
       if (!hecho('equipos')) { await masEquipos(); marcar('equipos'); }
@@ -802,10 +915,13 @@ function mensajeWhatsApp() {
 function solicitudDelChat() {
   const a = APLICACIONES.find((x) => x.id === datos.apl);
   if (!datos.folio) { datos.folio = nuevoFolio(); datos.fechaSolicitud = new Date().toISOString(); }
-  let equipos = datos.alcance === 'linea' ? (datos.linea || []).map((x) => ({ id: x.id, dato: x.dato })) : datos.seleccion.map((s) => ({ id: s.id, dato: s.dato }));
-  // Equipos que nombró por el camino ("me interesa una prensa") también van, con capacidad por definir
+  // Toda la línea y además los que sumó después ("agregar otro"), o solo los que eligió
+  let equipos = datos.alcance === 'linea' ? (datos.linea || []).map((x) => ({ id: x.id, dato: x.dato })) : [];
+  const base = new Set(equipos.map((e) => e.id));
+  equipos = [...equipos, ...datos.seleccion.filter((s) => !base.has(s.id)).map((s) => ({ id: s.id, dato: s.dato }))];
+  // Equipos que nombró por el camino ("me interesa una prensa") y los de su carrito también van, con capacidad por definir
   const ya = new Set(equipos.map((e) => e.id));
-  equipos = [...equipos, ...[...datos.equipos].filter((id) => !ya.has(id)).map((id) => ({ id, dato: '' }))];
+  equipos = [...equipos, ...[...new Set([...datos.equipos, ...enCarrito()])].filter((id) => !ya.has(id)).map((id) => ({ id, dato: '' }))];
   return {
     folio: datos.folio, fecha: datos.fechaSolicitud, origen: 'asistente', tipo: datos.tipo,
     producto: a ? a.nombre : (datos.otroProducto || 'Sin definir'), apl: datos.apl, litros: datos.litros,

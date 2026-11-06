@@ -1,4 +1,4 @@
-import { EQUIPOS, LINEAS, CASOS, MOSTRAR_CASOS, numeroWhatsApp, FOTOS, ORDEN_EQUIPOS, imagenEquipo } from './data.js';
+import { EQUIPOS, LINEAS, CASOS, MOSTRAR_CASOS, numeroWhatsApp, FOTOS, ORDEN_EQUIPOS, imagenEquipo, pintarContador } from './data.js';
 import { FICHAS } from './fichas.js';
 import { crearVisor } from './visor.js';
 
@@ -15,8 +15,7 @@ const boton = $('.nav__menu'), menu = $('#menu-movil');
 const cerrar = () => { boton.setAttribute('aria-expanded', 'false'); menu.classList.remove('abierto'); setTimeout(() => { menu.hidden = true; }, 400); };
 boton.addEventListener('click', () => { if (boton.getAttribute('aria-expanded') === 'true') return cerrar(); menu.hidden = false; requestAnimationFrame(() => menu.classList.add('abierto')); boton.setAttribute('aria-expanded', 'true'); });
 $$('a', menu).forEach((a) => a.addEventListener('click', cerrar));
-const enCot = leer('eqx-cotizacion', []).length;
-$$('[data-contador]').forEach((el) => { $('.mono', el).textContent = enCot; el.classList.toggle('con-items', enCot > 0); });
+pintarContador(leer('eqx-cotizacion', []).length);
 
 // Equipo pedido
 const params = new URLSearchParams(location.search);
