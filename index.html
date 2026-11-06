@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="es-CO" class="sin-js">
+<head>
+<meta charset="utf-8">
+<!-- Prototipo: fuera de los buscadores hasta que Equinox apruebe los datos (quitar al publicar el sitio real) -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Equipos en acero inoxidable para plantas lácteas | Industrias Equinox Colombia</title>
+<meta name="description" content="Tinas de cuajado, pasteurizadores, tanques de enfriamiento y moldes en acero inoxidable, dimensionados para tu producto y tus litros diarios. Diseño, fabricación e instalación desde Antioquia.">
+<meta name="theme-color" content="#edf0f4">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="Industrias Equinox Colombia · Equipos lácteos en acero inoxidable">
+<meta property="og:description" content="Dinos qué produces y cuántos litros procesas: te mostramos la línea de equipos y la cotizamos.">
+<meta property="og:image" content="assets/img/posters/tanques-38806069.jpg">
+<link rel="icon" type="image/png" href="assets/img/logo-equinox-icono.png">
+<link rel="stylesheet" href="css/main.css">
+<!-- Tema elegido por la persona (claro u oscuro), antes de pintar para que no parpadee -->
+<script>try { var t = localStorage.getItem('eqx-tema'); if (t === 'oscuro' || t === 'claro') document.documentElement.dataset.tema = t; } catch (e) {}</script>
+<!-- Entrada: una vez por visita (o con ?intro=1); se omite si la persona pidió menos movimiento -->
+<script>try { var verIntro = /[?&]intro=1/.test(location.search); if ((verIntro || !sessionStorage.getItem('eqx-intro')) && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('con-intro'); } catch (e) {}</script>
+<script type="importmap">{ "imports": { "three": "./vendor/three/three.module.min.js" } }</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Industrias Equinox Colombia","url":"https://www.indequinoxcol.com/","telephone":"+57 310 725 0200","email":"ventas@indequinoxcol.com","address":{"@type":"PostalAddress","addressLocality":"Copacabana","addressRegion":"Antioquia","addressCountry":"CO"}}</script>
+</head>
+<body>
+<div class="intro" data-intro aria-hidden="true">
+  <button class="intro__saltar" type="button" data-intro-saltar tabindex="-1">Saltar</button>
+  <span class="intro__destello"></span>
+  <div class="intro__escena">
+    <div class="intro__placa" data-intro-placa>
+      <span class="intro__remache" style="left:3.2%;top:7%"></span><span class="intro__remache" style="right:3.2%;top:7%"></span>
+      <span class="intro__remache" style="left:3.2%;bottom:7%"></span><span class="intro__remache" style="right:3.2%;bottom:7%"></span>
+      <img class="intro__logo" src="assets/img/logo-equinox.png" alt="" width="612" height="202" data-intro-logo>
+      <span class="intro__costura"></span>
+      <dl class="intro__campos">
+        <div><dt>Fabricante</dt><dd>Industrias Equinox Colombia</dd></div>
+        <div><dt>Material</dt><dd>Acero inoxidable</dd></div>
+        <div><dt>Sector</dt><dd>Industria láctea</dd></div>
+        <div><dt>Origen</dt><dd>Antioquia, Colombia</dd></div>
+      </dl>
+      <span class="intro__oscuro"></span>
+      <canvas class="intro__lienzo" data-intro-lienzo></canvas>
+    </div>
+    <!-- El robot soldador de Equinox recorre la costura; intro.js pone la punta de la antorcha en el arco -->
+    <img class="intro__soldador" src="assets/img/asistente/soldador.webp" alt="" width="605" height="520" fetchpriority="high" data-intro-soldador>
+    <span class="intro__arco" data-intro-arco></span>
+  </div>
+  <div class="intro__texto">
+    <p class="intro__frase"><span style="--i:0">Ingeniería</span> <span style="--i:1">que</span> <span style="--i:2">transforma</span><br><span class="intro__cota" style="--i:3">tu producción.</span></p>
+    <p class="intro__sub">Diseñamos, fabricamos e instalamos plantas lácteas en acero inoxidable.</p>
+    <div class="intro__acciones">
+      <button class="btn btn--sobre-noche" type="button" data-intro-entrar tabindex="-1">Entrar <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></button>
+      <span class="intro__avance" aria-hidden="true"><i data-intro-avance></i></span>
+    </div>
+  </div>
+</div>
+<a class="sr" href="#principal">Saltar al contenido</a>
+
+<header class="nav" id="nav">
+  <a class="nav__logo" href="#inicio" aria-label="Industrias Equinox Colombia, inicio"><img src="assets/img/logo-equinox.png" alt="Industrias Equinox Colombia" width="102" height="34"></a>
+  <span class="nav__prototipo mono">Prototipo · datos de muestra</span>
+  <nav class="nav__enlaces" aria-label="Principal">
+    <a href="#soluciones">Soluciones</a>
+    <a href="equipos.html">Equipos</a>
+    <a href="planta.html">Arma tu planta</a>
+    <a href="#en-planta">En planta</a>
+    <a href="#fabrica">Fábrica</a>
+  </nav>
+  <div class="nav__acciones">
+    <button class="tema-boton" type="button" data-tema-boton aria-pressed="false" aria-label="Cambiar a modo oscuro" title="Modo oscuro"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-moon"/></svg></button>
+    <a class="nav__cot" href="#cotizar" data-contador><span class="txt">Cotización</span> <span class="mono" aria-label="equipos en la cotización">0</span></a>
+    <a class="btn btn--pequeno" href="#cotizar">Cotizar proyecto <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a>
+    <button class="nav__menu" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-movil"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="menu-movil" id="menu-movil" hidden>
+  <a href="#soluciones">Soluciones</a>
+  <a href="equipos.html">Equipos</a>
+  <a href="planta.html">Arma tu planta</a>
+  <a href="#en-planta">En planta</a>
+  <a href="#cotizar">Cotizar</a>
+  <p class="rotulo">Prototipo · contenido marcado como muestra</p>
+</div>
+
+<main id="principal">
+
+<!-- LÁMINA 01 · configurador -->
+<section class="lamina cuadricula" id="inicio" aria-labelledby="titulo-inicio">
+  <div class="lamina__marco">
+    <div class="regla regla--h" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+    <div class="regla regla--v" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div>
+
+    <div class="lamina__titulo">
+      <h1 id="titulo-inicio">Tu planta láctea, dibujada y fabricada <em>en acero inoxidable.</em></h1>
+      <!-- El robot de Equinox presenta el plano: apunta al tanque holográfico, hacia el cajetín donde se configura la línea. Abre el asistente. -->
+      <button type="button" class="lamina__robot" data-asistente-abrir="cotizar" aria-label="Abrir el asistente de Equinox para cotizar tu planta">
+        <img src="assets/img/asistente/holograma.webp" alt="" width="598" height="560" fetchpriority="high" decoding="async">
+        <span class="lamina__robot-nota"><span class="mono">Asistente Equinox</span><span>Pregúntame<span class="lamina__robot-mas"> por tu planta</span></span></span>
+      </button>
+      <p class="lead">Tinas, pasteurizadores, tanques y moldes dimensionados para tu producto y tus litros diarios. Diseñamos, fabricamos e instalamos desde Antioquia.</p>
+    </div>
+
+    <form class="cajetin lamina__cajetin" id="configurador" aria-label="Configura tu línea">
+      <div class="c-3"><span class="rotulo">Proyecto</span><span class="cajetin__valor" data-proyecto>Planta de queso campesino</span></div>
+      <div class="c-3 fin litros-celda pide" data-litros-celda>
+        <label class="rotulo" for="litros-num">¿Cuántos litros procesas al día?</label>
+        <div class="litros__valor"><input id="litros-num" class="mono" type="text" inputmode="numeric" autocomplete="off" value="2.000" aria-describedby="litros-pista" data-litros-num><span class="mono" aria-hidden="true">L</span></div>
+        <input type="range" id="litros" min="0" max="100" step="1" value="50" aria-label="Leche por día" aria-describedby="litros-pista">
+        <output id="litros-salida" class="sr" for="litros">2.000 L</output>
+        <p class="litros__pista" id="litros-pista" data-litros-pista>Es un ejemplo: escribe tus litros para dimensionar la línea.</p>
+      </div>
+      <div class="c-6 fin" role="radiogroup" aria-labelledby="lbl-producto">
+        <span class="rotulo" id="lbl-producto">¿Qué produces?</span>
+        <div class="chips" data-chips-aplicacion></div>
+      </div>
+      <div class="c-4 cajetin__cta">
+        <a class="btn" href="#cotizar" data-cotizar-linea>Cotizar esta línea <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a>
+        <span class="cajetin__resumen" data-resumen>5 equipos sugeridos</span>
+      </div>
+      <div class="c-2 fin cajetin__wa">
+        <a class="enlace" href="planta.html" data-planta-linea><svg width="20" height="20" aria-hidden="true"><use href="assets/img/iconos.svg#i-ruler"/></svg> Armar en 3D</a>
+        <a class="enlace" href="#" data-wa-linea target="_blank" rel="noopener"><svg width="20" height="20" aria-hidden="true"><use href="assets/img/iconos.svg#i-whatsapp-logo"/></svg> WhatsApp</a>
+      </div>
+      <a class="c-6 fin ultima ver-planta" href="planta.html" data-ver-funcionando>
+        <span class="ver-planta__play" aria-hidden="true"><svg><use href="assets/img/iconos.svg#i-play"/></svg></span>
+        <span class="ver-planta__texto"><strong>Ver esta planta funcionando en 3D</strong><small class="mono" data-ver-datos>Recorrido en 3D</small></span>
+        <svg class="ver-planta__flecha" aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg>
+      </a>
+    </form>
+
+    <figure class="lamina__dibujo" aria-live="polite">
+      <p class="lamina__leyenda mono" data-leyenda aria-hidden="true">Línea sugerida</p>
+      <svg class="plano" id="plano" role="img" aria-labelledby="plano-desc"></svg>
+      <figcaption class="sr" id="plano-desc">Plano de la línea de equipos sugerida.</figcaption>
+    </figure>
+    <p class="desliza mono" aria-hidden="true">Desliza el plano para ver toda la línea →</p>
+
+    <div class="notas lamina__notas">
+      <span class="rotulo">Notas</span>
+      <ol>
+        <li>Dimensionamiento orientativo para <span class="mono" data-litros-texto>2.000 L</span> por día. La ingeniería de Equinox confirma medidas en la visita técnica.</li>
+        <li>Equipos en acero inoxidable. Capacidades según el catálogo de Equinox.</li>
+        <li>Toca cualquier equipo del plano para ver su ficha técnica.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- Placas de identificación -->
+<section class="placas" aria-label="Datos de Equinox">
+  <div class="contenedor">
+    <dl class="placas__fila">
+      <div class="placa revela"><dt>Fabricante</dt><dd>Industrias Equinox Colombia<small>Copacabana, Antioquia · CO</small></dd></div>
+      <div class="placa revela"><dt>Experiencia</dt><dd>12+ años<small>fabricando equipos para la industria alimentaria</small></dd></div>
+      <div class="placa revela"><dt>Material</dt><dd>Acero inoxidable<small>AISI 304 con acabados sanitarios</small></dd></div>
+      <div class="placa revela"><dt>Servicio</dt><dd>De punta a punta<small>diseño, fabricación, instalación y soporte técnico</small></dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- Soluciones por aplicación -->
+<section class="seccion" id="soluciones" aria-labelledby="titulo-soluciones">
+  <div class="contenedor">
+    <div class="seccion__cabeza revela">
+      <h2 id="titulo-soluciones">Empieza por lo que produces.</h2>
+      <p class="lead">Siete tipos de planta, cada uno con su línea de equipos. Elige la tuya y mira qué lleva.</p>
+    </div>
+    <div class="aplicaciones__cuerpo">
+      <ol class="indice" data-indice></ol>
+      <aside class="panel-apl" aria-live="polite">
+        <div class="visor"><video data-video-apl muted loop playsinline preload="none" poster="assets/img/posters/quesos-5930398.jpg"></video><span class="credito" data-credito-apl>Video de referencia · Pexels</span></div>
+        <div class="panel-apl__texto">
+          <h3 data-apl-nombre>Queso fresco y campesino</h3>
+          <p data-apl-resumen></p>
+        </div>
+        <ul class="lista-equipos" data-apl-equipos></ul>
+        <div class="cajetin__acciones">
+          <button class="btn" type="button" data-ver-plano>Ver la línea en el plano <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-ruler"/></svg></span></button>
+          <a class="enlace enlace--play" href="planta.html" data-apl-ver><svg width="18" height="18" aria-hidden="true"><use href="assets/img/iconos.svg#i-play"/></svg> Verla funcionando en 3D</a>
+          <a class="enlace" href="#cotizar" data-apl-cotizar>Cotizar esta línea</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- En planta: video real de una línea de mozzarella en operación -->
+<section class="seccion noche cuadricula en-planta" aria-labelledby="titulo-en-planta" id="en-planta">
+  <div class="contenedor">
+    <div class="seccion__cabeza revela">
+      <h2 id="titulo-en-planta">Así trabaja una línea en planta.</h2>
+      <div style="justify-self:end;display:grid;gap:14px"><p class="lead">Imágenes reales de una línea de mozzarella en operación: la cuajada entra a la tolva, la pasta sale hilada y llena el molde, y los moldes llenos se van en carros a enfriar.</p><p><span class="sello">Video real</span></p></div>
+    </div>
+    <ol class="en-planta__tiras" aria-label="La línea de mozzarella, paso a paso">
+      <li class="revela">
+        <div class="en-planta__video"><video data-autoplay muted loop playsinline preload="none" poster="assets/img/posters/planta-tolva.jpg" aria-label="Cuajada desmenuzada dentro de la tolva de acero inoxidable"><source src="assets/video/planta-tolva.mp4" type="video/mp4"></video></div>
+        <span class="mono">01</span><strong>Entra la cuajada</strong><p>Desmenuzada, directo a la tolva.</p>
+      </li>
+      <li class="revela">
+        <div class="en-planta__video"><video data-autoplay muted loop playsinline preload="none" poster="assets/img/posters/planta-llenado.jpg" aria-label="La pasta hilada sale de la máquina y llena un molde de bloque"><source src="assets/video/planta-llenado.mp4" type="video/mp4"></video></div>
+        <span class="mono">02</span><strong>Sale hilada</strong><p>La pasta cae caliente y llena el molde. <a href="equipo.html?e=moldeMozzarella">Molde mozzarella</a></p>
+      </li>
+      <li class="revela">
+        <div class="en-planta__video"><video data-autoplay muted loop playsinline preload="none" poster="assets/img/posters/planta-moldes.jpg" aria-label="Moldes de mozzarella sobre la mesa mientras un operario carga canastillas junto a la máquina"><source src="assets/video/planta-moldes.mp4" type="video/mp4"></video></div>
+        <span class="mono">03</span><strong>Moldes en turno</strong><p>Esperan en la mesa, al lado de la máquina.</p>
+      </li>
+      <li class="revela">
+        <div class="en-planta__video"><video data-autoplay muted loop playsinline preload="none" poster="assets/img/posters/planta-carros.jpg" aria-label="Carros escabiladeros cargados de moldes"><source src="assets/video/planta-carros.mp4" type="video/mp4"></video></div>
+        <span class="mono">04</span><strong>A enfriar</strong><p>Carros escabiladeros cargados de moldes. <a href="equipo.html?e=carro">Carro escabiladero</a></p>
+      </li>
+    </ol>
+    <div class="en-planta__pie revela">
+      <p>¿Cómo quedaría esta línea con tu leche? Mírala armada en 3D, con el recorrido de principio a fin.</p>
+      <a class="btn btn--sobre-noche" href="planta.html?apl=mozzarella&amp;L=2000&amp;ver=recorrido" data-ver-linea="mozzarella">Ver la línea de mozzarella en 3D <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-play"/></svg></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- Anatomía del tanque (3D) -->
+<section class="anatomia cuadricula" id="tanque" aria-labelledby="titulo-tanque">
+  <div class="contenedor anatomia__intro">
+    <div class="seccion__cabeza revela" style="margin-bottom:0">
+      <h2 id="titulo-tanque">Un tanque, por dentro.</h2>
+      <div style="justify-self:end;display:grid;gap:14px"><p class="lead">Lo que el cliente no ve también se fabrica con cuidado: la pared, el aislamiento y el agitador.</p><p><span class="sello">Especificaciones de muestra</span></p></div>
+    </div>
+  </div>
+  <div class="anatomia__grid">
+    <div class="anatomia__escena">
+      <canvas id="tanque-3d" aria-label="Modelo 3D de un tanque de enfriamiento de leche en acero inoxidable"></canvas>
+      <div class="anotaciones" id="anotaciones-3d" aria-hidden="true">
+        <div class="anota" data-ancla="tablero"><span>Tablero de temperatura</span></div>
+        <div class="anota anota--izq" data-ancla="pared"><span>Pared interior · aislamiento · pared exterior</span></div>
+        <div class="anota" data-ancla="agitador"><span>Motorreductor del agitador</span></div>
+        <div class="anota anota--izq" data-ancla="tapa"><span>Tapa de inspección</span></div>
+        <div class="anota anota--izq" data-ancla="valvula"><span>Válvula sanitaria de descarga</span></div>
+        <div class="anota" data-ancla="patas"><span>Patas regulables</span></div>
+      </div>
+    </div>
+    <div class="anatomia__pasos">
+      <article class="paso-3d" data-paso="plano">
+        <span class="mono">01 · Plano</span>
+        <h3>Cada equipo empieza como un plano.</h3>
+        <p>Antes de cortar acero, la línea se dibuja con tus medidas, tu volumen y el espacio de tu planta.</p>
+        <dl><dt>Entrega</dt><dd>Plano aprobado por el cliente</dd></dl>
+      </article>
+      <article class="paso-3d" data-paso="acero">
+        <span class="mono">02 · Acero</span>
+        <h3>Acero inoxidable de punta a punta.</h3>
+        <p>Cuerpo, tapa, patas y accesorios en acero inoxidable con acabado sanitario, fácil de lavar.</p>
+        <dl><dt>Material</dt><dd>AISI 304</dd><dt>Capacidades</dt><dd>300 – 2.000 L</dd></dl>
+      </article>
+      <article class="paso-3d" data-paso="corte">
+        <span class="mono">03 · Pared</span>
+        <h3>Doble pared para conservar el frío.</h3>
+        <p>La leche toca solo la pared interior pulida. El aislamiento entre las dos paredes mantiene la temperatura.</p>
+        <dl><dt>Interior</dt><dd>Pulido sanitario</dd><dt>Aislamiento</dt><dd>Poliuretano (muestra)</dd></dl>
+      </article>
+      <article class="paso-3d" data-paso="agitador">
+        <span class="mono">04 · Agitación</span>
+        <h3>Enfría parejo sin batir la grasa.</h3>
+        <p>Un motorreductor mueve paletas lentas que reparten el frío por todo el volumen.</p>
+        <dl><dt>Accionamiento</dt><dd>Motorreductor</dd><dt>Paletas</dt><dd>Acero inoxidable</dd></dl>
+      </article>
+      <article class="paso-3d" data-paso="tapa">
+        <span class="mono">05 · Operación</span>
+        <h3>Inspección, descarga y nivel en piso irregular.</h3>
+        <p>Tapa de inspección, válvula sanitaria de descarga y patas regulables para fincas y centros de acopio.</p>
+        <p style="margin-top:18px"><a class="btn" href="equipo.html?e=enfriamiento">Ver la ficha del tanque <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Fábrica -->
+<section class="noche cuadricula seccion" id="fabrica" aria-labelledby="titulo-fabrica" style="padding-top:clamp(64px,8vw,120px)">
+  <div class="contenedor">
+    <div class="seccion__cabeza revela" style="margin-bottom:0">
+      <h2 id="titulo-fabrica">Del rollo de acero a tu planta.</h2>
+      <p class="lead">Una sola empresa responde por el plano, la fabricación y el arranque del equipo en tu planta.</p>
+    </div>
+  </div>
+  <div class="fabrica__portada" data-portada>
+    <video data-autoplay muted loop playsinline preload="none" poster="assets/img/posters/tanques-5532872.jpg"><source src="assets/video/tanques-5532872-vertical.mp4" type="video/mp4" media="(orientation: portrait)"><source src="assets/video/tanques-5532872.mp4" type="video/mp4"></video>
+    <div class="fabrica__frase">
+      <a class="btn btn--sobre-noche" href="#cotizar">Pide una visita técnica <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a>
+    </div>
+    <span class="credito">Video de referencia · Pexels · cottonbro studio</span>
+  </div>
+  <div class="contenedor">
+    <div class="fabrica__etapas">
+      <article class="etapa etapa--plano revela">
+        <div class="visor" aria-hidden="true">
+          <svg viewBox="0 0 200 150" width="70%"><path d="M30 120H170M40 120V40H90V120M100 120V60A30 8 0 0 1 160 60V120" /><path d="M40 30H90M36 26V34M94 26V34" style="stroke:#e8604a"/><path d="M110 75H150M110 95H150" style="stroke-dasharray:4 3"/></svg>
+        </div>
+        <span class="mono">01</span><h3>Diseño</h3><p>Visita, medidas del espacio y plano de la línea.</p>
+      </article>
+      <article class="etapa revela">
+        <div class="visor"><video data-autoplay muted loop playsinline preload="none" poster="assets/img/posters/corte-13530502.jpg"><source src="assets/video/corte-13530502.mp4" type="video/mp4"></video><span class="credito">Referencia · Maria Van</span></div>
+        <span class="mono">02</span><h3>Corte y conformado</h3><p>Lámina cortada, rolada y preparada para soldar.</p>
+      </article>
+      <article class="etapa revela">
+        <div class="visor"><video data-autoplay muted loop playsinline preload="none" poster="assets/img/posters/pulido-4941370.jpg"><source src="assets/video/pulido-4941370.mp4" type="video/mp4"></video><span class="credito">Referencia · Tima Miroshnichenko</span></div>
+        <span class="mono">03</span><h3>Soldadura y pulido</h3><p>Uniones lisas y continuas, sin rincones donde se acumule leche.</p>
+      </article>
+      <article class="etapa revela">
+        <div class="visor"><video data-autoplay muted loop playsinline preload="none" style="object-position:62% 50%" poster="assets/img/posters/ordeno-4911448.jpg"><source src="assets/video/ordeno-4911448.mp4" type="video/mp4"></video><span class="credito">Referencia · cottonbro studio</span></div>
+        <span class="mono">04</span><h3>Instalación y arranque</h3><p>Montaje, puesta en marcha y orientación a tu personal.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Hecho por Equinox: fotos reales -->
+<section class="seccion galeria-real" aria-labelledby="titulo-galeria" id="hecho-por-equinox">
+  <div class="contenedor">
+    <div class="seccion__cabeza revela">
+      <h2 id="titulo-galeria">Esto sale de nuestro taller.</h2>
+      <div style="justify-self:end;display:grid;gap:14px"><p class="lead">Equipos fabricados por Equinox en acero inoxidable. Toca uno para ver su ficha, su plano y cómo funciona en 3D.</p><p><span class="sello">Fotos reales</span></p></div>
+    </div>
+    <ul class="galeria-real__grid" data-galeria></ul>
+  </div>
+</section>
+
+<!-- Arma tu planta -->
+<section class="seccion cuadricula banda-planta" aria-labelledby="titulo-banda-planta">
+  <div class="contenedor banda-planta__grid">
+    <div class="revela">
+      <h2 id="titulo-banda-planta">Arma tu planta en 3D, equipo por equipo.</h2>
+      <p class="lead" style="margin-top:18px">Elige tu producto y tus litros diarios, ubica cada equipo en tu sala y mira el recorrido de la leche por toda la línea. El sistema avisa qué falta y qué se queda corto, y al final cotizas la planta completa o descargas el plano.</p>
+      <div class="cajetin__acciones" style="margin-top:24px">
+        <a class="btn" href="planta.html" data-ver-funcionando>Ver una planta funcionando <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-play"/></svg></span></a>
+        <a class="btn btn--claro" href="planta.html" data-planta-linea>Armar la mía <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-ruler"/></svg></span></a>
+      </div>
+    </div>
+    <ol class="banda-planta__pasos revela">
+      <li><span class="mono">01</span><strong>Elige</strong><p>Producto, litros por día y medidas de la sala.</p></li>
+      <li><span class="mono">02</span><strong>Ubica</strong><p>Arrastra los equipos; las tuberías se conectan solas.</p></li>
+      <li><span class="mono">03</span><strong>Revisa</strong><p>Avisos de etapas faltantes, capacidades y espacio.</p></li>
+      <li><span class="mono">04</span><strong>Cotiza</strong><p>Envía la planta o descarga el plano en PDF.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- Asistente: cotizar conversando (abre el asistente de WhatsApp; la demostración se arma en main.js con datos reales de la línea) -->
+<section class="seccion noche cuadricula asistente-banda" id="asistente" aria-labelledby="titulo-asistente">
+  <div class="contenedor asistente-banda__grid">
+    <div class="revela">
+      <span class="rotulo">Asistente Equinox · por WhatsApp</span>
+      <h2 id="titulo-asistente" style="margin-top:12px">Cotiza conversando, en un minuto.</h2>
+      <p class="lead" style="margin-top:18px">Sin formularios largos: el asistente te pregunta qué produces y cuántos litros procesas, te muestra la línea sugerida y te deja hablando con un asesor de Equinox por WhatsApp, con todo escrito.</p>
+      <ol class="asistente-banda__pasos">
+        <li><span class="mono">01</span><strong>Cuéntale qué produces</strong><p>Con botones o con tus palabras.</p></li>
+        <li><span class="mono">02</span><strong>Mira tu línea sugerida</strong><p>Equipos y capacidades para tus litros.</p></li>
+        <li><span class="mono">03</span><strong>Sigue por WhatsApp</strong><p>Un asesor recibe tu mensaje listo.</p></li>
+      </ol>
+      <div class="cajetin__acciones" style="margin-top:28px">
+        <button type="button" class="btn btn--wa" data-asistente-abrir="cotizar">Hablar con el asistente <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-whatsapp-logo"/></svg></span></button>
+        <a class="btn btn--claro" href="#cotizar">Prefiero el formulario</a>
+      </div>
+    </div>
+    <figure class="asistente-banda__demo revela">
+      <img class="asistente-banda__robot" src="assets/img/asistente/notas.webp" alt="" width="455" height="420" loading="lazy" decoding="async">
+      <div class="asistente-banda__chat" data-demo-chat aria-hidden="true"></div>
+      <figcaption class="rotulo">Ejemplo de conversación con el asistente</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- Casos -->
+<!-- Oculta mientras los casos sean de muestra: se muestra sola con MOSTRAR_CASOS = true en js/data.js -->
+<section class="seccion" id="casos" aria-labelledby="titulo-casos" data-seccion-casos hidden>
+  <div class="contenedor">
+    <div class="seccion__cabeza revela">
+      <h2 id="titulo-casos">Cada proyecto, con su reto y su cifra.</h2>
+      <p class="lead">Así se cuentan los casos de éxito. Estos tres son de muestra y se reemplazan por proyectos reales de Equinox, con permiso de cada cliente.</p>
+    </div>
+    <div class="casos__grid" data-casos></div>
+  </div>
+</section>
+
+<!-- Equipos: adelanto por línea de proceso; el catálogo completo (con fichas y renders) está en equipos.html -->
+<section class="seccion cuadricula" id="equipos" aria-labelledby="titulo-equipos">
+  <div class="contenedor">
+    <div class="seccion__cabeza revela">
+      <h2 id="titulo-equipos">19 equipos en 6 líneas de proceso.</h2>
+      <div style="justify-self:end;display:grid;gap:16px"><p class="lead">Capacidades del catálogo de Equinox, con ficha, plano y modelo 3D para cada equipo. Entra por la línea que te interesa y agrega a tu cotización.</p><p><a class="btn" href="equipos.html">Ver los 19 equipos <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a></p></div>
+    </div>
+    <ul class="lineas-adelanto" data-lineas-adelanto></ul>
+  </div>
+</section>
+
+<!-- Calidad -->
+<section class="seccion" id="calidad" aria-labelledby="titulo-calidad">
+  <div class="contenedor dossier">
+    <div class="dossier__hoja revela">
+      <span class="sello">Propuesta · por confirmar</span>
+      <h3>Dossier de entrega</h3>
+      <ol>
+        <li><span class="mono">01</span><div><strong>Plano de fabricación aprobado</strong><small>Medidas, materiales y conexiones.</small></div></li>
+        <li><span class="mono">02</span><div><strong>Certificado de calidad del acero</strong><small>Emitido por el proveedor de la lámina.</small></div></li>
+        <li><span class="mono">03</span><div><strong>Prueba de estanqueidad</strong><small>Registro de la prueba antes del despacho.</small></div></li>
+        <li><span class="mono">04</span><div><strong>Manual de operación y limpieza</strong><small>Rutina de lavado y cuidado del acabado.</small></div></li>
+        <li><span class="mono">05</span><div><strong>Garantía escrita</strong><small>Alcance y vigencia por equipo.</small></div></li>
+        <li><span class="mono">06</span><div><strong>Capacitación en la puesta en marcha</strong><small>Para el personal que opera el equipo.</small></div></li>
+      </ol>
+    </div>
+    <div class="dossier__texto revela">
+      <h2 id="titulo-calidad">Un comprador técnico compra documentos, no promesas.</h2>
+      <p class="lead">El jefe de calidad responde ante el Invima. Por eso cada equipo debe llegar con su respaldo, y su diseño debe cumplir los requisitos sanitarios de la Resolución 2674 de 2013.</p>
+      <div class="hechos">
+        <div><strong>Superficies lisas</strong><p>No porosas, sin grietas ni rincones donde se acumule producto.</p></div>
+        <div><strong>Fácil de lavar</strong><p>Uniones y accesorios pensados para limpieza y desinfección.</p></div>
+        <div><strong>Acero en contacto</strong><p>Inoxidable AISI 304 en todas las partes que tocan el alimento.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Cotizador -->
+<section class="cotizar noche cuadricula" id="cotizar" aria-labelledby="titulo-cotizar">
+  <div class="contenedor cotizar__grid">
+    <div class="cotizar__intro">
+      <h2 id="titulo-cotizar">Cuéntanos tu proyecto. Te respondemos con una propuesta técnica.</h2>
+      <p class="lead">Cinco pasos cortos. Lo que respondas aquí lo recibe un ingeniero antes de llamarte.</p>
+      <ul class="garantias">
+        <li><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-clock"/></svg><span>Primera respuesta en menos de 1 hora hábil.</span></li>
+        <li><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-wrench"/></svg><span>Revisión técnica de tu solicitud, no un mensaje automático.</span></li>
+        <li><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-shield-check"/></svg><span>Tu solicitud queda registrada aunque no abras WhatsApp.</span></li>
+      </ul>
+      <p class="rotulo">Compromisos propuestos para Equinox</p>
+    </div>
+
+    <form class="formulario" id="formulario" novalidate>
+      <div class="formulario__cabeza"><strong>Solicitud de cotización</strong><span class="mono" data-folio>EQX · nueva</span></div>
+      <div class="progreso" aria-hidden="true"><span data-n="1">Tú</span><span data-n="2">Producción</span><span data-n="3">Equipos</span><span data-n="4">Lugar y plazo</span><span data-n="5">Contacto</span></div>
+
+      <fieldset class="paso-form activo" data-paso-form="1">
+        <legend>¿Quién eres?</legend>
+        <div class="opciones">
+          <label class="opcion"><input type="radio" name="tipo" value="Finca o ganadero"><span>Finca o ganadero<small>Acopio y enfriamiento</small></span></label>
+          <label class="opcion"><input type="radio" name="tipo" value="Quesera artesanal"><span>Quesera artesanal<small>Hasta 3.000 L/día</small></span></label>
+          <label class="opcion"><input type="radio" name="tipo" value="Procesadora"><span>Procesadora<small>Planta con varias líneas</small></span></label>
+          <label class="opcion"><input type="radio" name="tipo" value="Cooperativa o asociación"><span>Cooperativa o asociación<small>Centro de acopio</small></span></label>
+          <label class="opcion"><input type="radio" name="tipo" value="Entidad pública"><span>Entidad pública<small>Alcaldía, gobernación, programa</small></span></label>
+        </div>
+        <p class="grupo-error" data-error="tipo">Elige una opción para continuar.</p>
+      </fieldset>
+
+      <fieldset class="paso-form" data-paso-form="2">
+        <legend>¿Qué produces y cuánto?</legend>
+        <div class="campo"><label for="f-producto">Producto principal</label><select id="f-producto" name="producto" data-select-producto></select></div>
+        <div class="campo"><label for="f-litros">Litros de leche por día</label><input id="f-litros" name="litros" type="number" inputmode="numeric" min="50" step="50" placeholder="2000"><span class="ayuda">Un estimado basta. Si vas a crecer, escribe la meta.</span><span class="msg-error">Escribe los litros diarios (mínimo 50).</span></div>
+      </fieldset>
+
+      <fieldset class="paso-form" data-paso-form="3">
+        <legend>¿Qué equipos te interesan?</legend>
+        <p class="vacio" data-sin-equipos>Marca los equipos. Si no sabes, déjalo así y te proponemos la línea.</p>
+        <div class="equipos-sel" data-equipos-form></div>
+      </fieldset>
+
+      <fieldset class="paso-form" data-paso-form="4">
+        <legend>¿Dónde y para cuándo?</legend>
+        <div class="dos">
+          <div class="campo"><label for="f-depto">Departamento</label><select id="f-depto" name="departamento"><option value="">Elige</option><option>Antioquia</option><option>Boyacá</option><option>Caldas</option><option>Cesar</option><option>Córdoba</option><option>Cundinamarca</option><option>Nariño</option><option>Quindío</option><option>Risaralda</option><option>Santander</option><option>Sucre</option><option>Valle del Cauca</option><option>Otro</option></select><span class="msg-error">Elige el departamento.</span></div>
+          <div class="campo"><label for="f-municipio">Municipio</label><input id="f-municipio" name="municipio" autocomplete="address-level2" placeholder="San Pedro de los Milagros"></div>
+        </div>
+        <div class="campo"><label for="f-plazo">¿Cuándo necesitas el equipo?</label><select id="f-plazo" name="plazo"><option>En menos de 1 mes</option><option selected>En 1 a 3 meses</option><option>En 3 a 6 meses</option><option>Más adelante, estoy averiguando</option></select></div>
+      </fieldset>
+
+      <fieldset class="paso-form" data-paso-form="5">
+        <legend>¿Cómo te contactamos?</legend>
+        <div class="dos">
+          <div class="campo"><label for="f-nombre">Nombre</label><input id="f-nombre" name="nombre" autocomplete="name" required><span class="msg-error">Escribe tu nombre.</span></div>
+          <div class="campo"><label for="f-empresa">Empresa o finca</label><input id="f-empresa" name="empresa" autocomplete="organization"></div>
+        </div>
+        <div class="dos">
+          <div class="campo"><label for="f-cel">Celular con WhatsApp</label><input id="f-cel" name="celular" type="tel" inputmode="tel" autocomplete="tel" placeholder="300 123 4567" required><span class="msg-error">Escribe un celular de 10 dígitos.</span></div>
+          <div class="campo"><label for="f-correo">Correo <span class="ayuda">(opcional)</span></label><input id="f-correo" name="correo" type="email" autocomplete="email"></div>
+        </div>
+        <div class="campo"><label for="f-nota">Algo más que debamos saber <span class="ayuda">(opcional)</span></label><textarea id="f-nota" name="nota" placeholder="Espacio disponible, voltaje, si es para un proyecto financiado…"></textarea></div>
+      </fieldset>
+
+      <div class="formulario__pie" data-pie-form>
+        <button class="btn btn--claro" type="button" data-atras hidden>Atrás</button>
+        <span class="mono" style="font-size:.75rem;color:var(--ink-3)" data-paso-texto>Paso 1 de 5</span>
+        <button class="btn" type="button" data-siguiente>Siguiente <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></button>
+      </div>
+
+      <div class="exito" data-exito role="status" aria-live="polite">
+        <div class="exito__cabeza">
+          <img src="assets/img/asistente/saludo.webp" alt="" width="436" height="420" loading="lazy" decoding="async">
+          <div><span class="mono" data-folio-exito></span><h3>Recibimos tu solicitud.</h3></div>
+        </div>
+        <p>Un ingeniero de Equinox la revisa y te escribe al celular que dejaste. Si quieres adelantar la conversación, envíala por WhatsApp con el PDF de la solicitud: lleva tus datos, los equipos y el resumen técnico de cada uno.</p>
+        <dl data-resumen-exito></dl>
+        <div class="cajetin__acciones"><a class="btn btn--wa" href="#" target="_blank" rel="noopener" data-wa-exito>Enviar a Equinox por WhatsApp <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-whatsapp-logo"/></svg></span></a><button class="btn btn--claro" type="button" data-pdf-exito>Descargar PDF <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-download-simple"/></svg></span></button><button class="btn btn--claro" type="button" data-nueva>Nueva solicitud</button></div>
+        <p class="exito__pista" data-pista-exito>WhatsApp no deja adjuntar archivos desde la web: al tocar el botón se descarga el PDF de tu solicitud y se abre WhatsApp con el mensaje listo; arrastra el PDF al chat.</p>
+        <p class="aviso">Prototipo: aquí la solicitud se guarda solo en este navegador. En la versión real se guarda en el servidor de Equinox y llega al correo de ventas.</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Preguntas -->
+<section class="seccion" id="preguntas" aria-labelledby="titulo-preguntas">
+  <div class="contenedor preguntas__grid">
+    <div class="revela">
+      <h2 id="titulo-preguntas">Antes de cotizar.</h2>
+      <p class="lead" style="margin-top:16px">Lo que más preguntan los compradores de equipos.</p>
+      <p class="rotulo" style="margin-top:16px">Respuestas de muestra: Equinox las ajusta</p>
+      <div class="preguntas__asistente">
+        <img src="assets/img/asistente/pensativo.webp" alt="" width="460" height="420" loading="lazy" decoding="async">
+        <div>
+          <strong>¿Tu pregunta no está aquí?</strong>
+          <p>El asistente la prepara contigo y te pasa con un asesor por WhatsApp.</p>
+          <button type="button" class="btn btn--pequeno btn--wa" data-asistente-abrir="asesoria">Preguntarle al asistente <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-whatsapp-logo"/></svg></span></button>
+        </div>
+      </div>
+    </div>
+    <div class="faq revela">
+      <details><summary>¿Fabrican a la medida?<i aria-hidden="true"></i></summary><p>Sí. Cada equipo se define según tu producto, tus litros diarios y el espacio disponible en la planta.</p></details>
+      <details><summary>¿Cuánto tarda la fabricación?<i aria-hidden="true"></i></summary><p>Depende del equipo y de la capacidad. Cada cotización trae el plazo de entrega por escrito.</p></details>
+      <details><summary>¿Instalan fuera de Antioquia?<i aria-hidden="true"></i></summary><p>La cotización incluye el lugar de instalación. Equinox confirma la cobertura y el costo de traslado de su equipo técnico.</p></details>
+      <details><summary>¿Qué garantía tienen los equipos?<i aria-hidden="true"></i></summary><p>La garantía queda por escrito en la cotización, con su alcance y su vigencia para cada equipo.</p></details>
+      <details><summary>¿Dan mantenimiento y repuestos?<i aria-hidden="true"></i></summary><p>Sí. El servicio técnico incluye diagnóstico, mantenimiento, repuestos y soporte después de la entrega.</p></details>
+      <details><summary>¿Cómo se paga?<i aria-hidden="true"></i></summary><p>Cada cotización define anticipo y saldo. Si tu proyecto tiene financiación o recursos públicos, dilo en la solicitud y preparamos los documentos.</p></details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="pie noche" id="contacto">
+  <div class="contenedor">
+    <div class="pie__cierre">
+      <h2>Hablemos de tu planta.</h2>
+      <div class="pie__acciones">
+        <a class="btn btn--wa" href="https://wa.me/573128410099?text=Hola%2C%20Equinox.%20Quiero%20informaci%C3%B3n%20sobre%20sus%20equipos." target="_blank" rel="noopener">WhatsApp <span data-wa-numero>312 841 0099</span> <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-whatsapp-logo"/></svg></span></a>
+        <a class="btn btn--sobre-noche" href="#cotizar">Cotizar proyecto <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a>
+      </div>
+    </div>
+    <div class="pie__cols">
+      <div><span class="pie__logo"><img src="assets/img/logo-equinox.png" alt="Industrias Equinox Colombia" width="90" height="30"></span><p style="margin-top:14px">Equipos en acero inoxidable para la industria láctea y alimentaria. Copacabana, Antioquia.</p></div>
+      <div><h3>Contacto</h3><a href="tel:+573107250200">+57 310 725 0200</a><a href="tel:+573128410099">+57 312 841 0099</a><a href="mailto:ventas@indequinoxcol.com">ventas@indequinoxcol.com</a></div>
+      <div><h3>Sitio</h3><a href="#soluciones">Soluciones</a><a href="equipos.html">Equipos</a><a href="#en-planta">En planta</a><a href="planta.html">Arma tu planta en 3D</a></div>
+      <div><h3>Redes</h3><a href="#" aria-disabled="true">LinkedIn (por crear)</a><a href="#" aria-disabled="true">Instagram (por crear)</a><a href="#" aria-disabled="true">YouTube (por crear)</a></div>
+    </div>
+    <div class="pie__legal">
+      <span>© 2026 Industrias Equinox Colombia.</span>
+      <span>Prototipo de diseño. Las especificaciones y compromisos marcados son de muestra. Videos de referencia de Pexels: cottonbro studio, Maria Van, Tima Miroshnichenko, Anna Shvets, Kiwi and Camera.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="barra-movil">
+  <a class="btn btn--wa btn--pequeno" href="https://wa.me/573128410099" target="_blank" rel="noopener">WhatsApp <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-whatsapp-logo"/></svg></span></a>
+  <a class="btn btn--pequeno" href="#cotizar">Cotizar <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a>
+</div>
+
+<script src="vendor/gsap/gsap.min.js"></script>
+<script src="vendor/gsap/ScrollTrigger.min.js"></script>
+<script type="module" src="js/tema.js"></script>
+<script type="module" src="js/asistente.js"></script>
+<script type="module" src="js/intro.js"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

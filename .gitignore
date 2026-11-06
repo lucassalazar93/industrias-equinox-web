@@ -1,0 +1,20 @@
+# Herramientas internas (no son parte del sitio)
+herramientas/
+
+# Videos y pósters de Pexels que la web ya no usa (quedan en el disco, no en el repositorio)
+assets/video/leche-8064136.mp4
+assets/video/planta-35844883.mp4
+assets/video/pulido-35614237.mp4
+assets/video/quesos-39019818.mp4
+assets/video/soldadura-6046358.mp4
+assets/img/posters/leche-8064136.jpg
+assets/img/posters/planta-35844883.jpg
+assets/img/posters/pulido-35614237.jpg
+assets/img/posters/quesos-39019818.jpg
+assets/img/posters/soldadura-6046358.jpg
+
+# Sistema y Vercel
+desktop.ini
+Thumbs.db
+.DS_Store
+.vercel

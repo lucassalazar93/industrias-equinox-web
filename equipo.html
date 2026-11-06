@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="es-CO" class="sin-js">
+<head>
+<meta charset="utf-8">
+<!-- Prototipo: fuera de los buscadores hasta que Equinox apruebe los datos (quitar al publicar el sitio real) -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ficha técnica | Industrias Equinox Colombia</title>
+<meta name="description" content="Ficha técnica de equipos en acero inoxidable para la industria láctea: especificaciones, vista explosionada, funcionamiento y cotización.">
+<meta name="theme-color" content="#edf0f4">
+<meta property="og:type" content="product">
+<meta property="og:locale" content="es_CO">
+<link rel="icon" type="image/png" href="assets/img/logo-equinox-icono.png">
+<link rel="stylesheet" href="css/main.css">
+<!-- Tema elegido por la persona (claro u oscuro), antes de pintar para que no parpadee -->
+<script>try { var t = localStorage.getItem('eqx-tema'); if (t === 'oscuro' || t === 'claro') document.documentElement.dataset.tema = t; } catch (e) {}</script>
+<script type="importmap">{ "imports": { "three": "./vendor/three/three.module.min.js" } }</script>
+</head>
+<body>
+<a class="sr" href="#principal">Saltar al contenido</a>
+
+<header class="nav elevada" id="nav">
+  <a class="nav__logo" href="index.html" aria-label="Industrias Equinox Colombia, inicio"><img src="assets/img/logo-equinox.png" alt="Industrias Equinox Colombia" width="102" height="34"></a>
+  <span class="nav__prototipo mono">Prototipo · datos de muestra</span>
+  <nav class="nav__enlaces" aria-label="Principal">
+    <a href="index.html#soluciones">Soluciones</a>
+    <a href="equipos.html" aria-current="true">Equipos</a>
+    <a href="planta.html">Arma tu planta</a>
+    <a href="index.html#en-planta">En planta</a>
+  </nav>
+  <div class="nav__acciones">
+    <button class="tema-boton" type="button" data-tema-boton aria-pressed="false" aria-label="Cambiar a modo oscuro" title="Modo oscuro"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-moon"/></svg></button>
+    <a class="nav__cot" href="index.html#cotizar" data-contador><span class="txt">Cotización</span> <span class="mono">0</span></a>
+    <a class="btn btn--pequeno" href="index.html#cotizar" data-cotizar>Cotizar <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a>
+    <button class="nav__menu" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-movil"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<nav class="barra-ficha" aria-label="Navegación entre equipos" data-barra-ficha>
+  <a class="barra-ficha__volver" href="equipos.html" data-volver><svg aria-hidden="true" class="ico-izq"><use href="assets/img/iconos.svg#i-arrow-right"/></svg> Equipos</a>
+  <span class="barra-ficha__nombre" data-barra-nombre></span>
+  <span class="barra-ficha__pasos"><a href="equipos.html" data-anterior aria-label="Equipo anterior"><svg aria-hidden="true" class="ico-izq"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></a><span class="mono" data-posicion></span><a href="equipos.html" data-siguiente aria-label="Equipo siguiente"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></a></span>
+</nav>
+<div class="menu-movil" id="menu-movil" hidden>
+  <a href="index.html#soluciones">Soluciones</a>
+  <a href="equipos.html" aria-current="true">Equipos</a>
+  <a href="planta.html">Arma tu planta</a>
+  <a href="index.html#en-planta">En planta</a>
+  <a href="index.html#cotizar">Cotizar</a>
+  <p class="rotulo">Prototipo · contenido marcado como muestra</p>
+</div>
+
+<main id="principal">
+<section class="ficha-hero cuadricula" aria-labelledby="titulo-ficha">
+  <div class="ficha-hero__marco">
+    <div class="ficha-hero__info">
+      <div class="ficha-volver"><a class="volver" href="equipos.html" data-volver><svg aria-hidden="true" class="ico-izq"><use href="assets/img/iconos.svg#i-arrow-right"/></svg> <span data-volver-texto>Volver a equipos</span></a><span class="mono ficha-volver__pos" data-posicion></span></div>
+      <nav class="migas" aria-label="Ruta"><a href="index.html">Inicio</a><span aria-hidden="true">/</span><a href="equipos.html">Equipos</a><span aria-hidden="true">/</span><span data-linea></span></nav>
+      <p class="mono tag-equipo" data-tag></p>
+      <h1 id="titulo-ficha" data-nombre>Equipo</h1>
+      <p class="lead" data-resumen></p>
+      <div role="radiogroup" aria-labelledby="lbl-cap" data-bloque-cap>
+        <span class="rotulo" id="lbl-cap" style="display:block;margin-bottom:8px">Capacidad</span>
+        <div class="capacidades chips" data-capacidades></div>
+        <p class="nota-cap" data-nota-cap hidden></p>
+      </div>
+      <dl class="placa placa-ficha" data-placa></dl>
+      <p class="rotulo" style="margin-top:-10px">Valores de muestra · Equinox entrega los reales</p>
+      <div class="cajetin__acciones">
+        <a class="btn" href="index.html#cotizar" data-cotizar>Cotizar <span data-cap-texto></span> <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a>
+        <button class="btn btn--claro" type="button" data-pdf><svg width="18" height="18" aria-hidden="true"><use href="assets/img/iconos.svg#i-download-simple"/></svg> <span data-pdf-texto>Ficha técnica en PDF</span></button>
+      </div>
+      <div class="cajetin__acciones">
+        <button class="enlace enlace--boton" type="button" data-plano style="color:var(--ink)"><svg width="20" height="20" aria-hidden="true"><use href="assets/img/iconos.svg#i-ruler"/></svg> <span data-plano-texto>Plano en PDF</span></button>
+        <a class="enlace" href="planta.html" data-a-planta><svg width="20" height="20" aria-hidden="true"><use href="assets/img/iconos.svg#i-ruler"/></svg> Agregar a mi planta</a>
+        <a class="enlace" href="#" target="_blank" rel="noopener" data-wa><svg width="20" height="20" aria-hidden="true"><use href="assets/img/iconos.svg#i-whatsapp-logo"/></svg> Preguntar por WhatsApp</a>
+      </div>
+    </div>
+    <div class="visor-3d">
+      <canvas id="visor-a" aria-label="Modelo 3D del equipo; arrastra para girarlo"></canvas>
+      <div class="capa-visor" id="capa-a" aria-hidden="true"></div>
+      <figure class="visor-foto" data-foto hidden>
+        <div class="visor-foto__marco"><img alt="" data-foto-img decoding="async"></div>
+        <figcaption><span class="sello">Foto real</span><span>Equipo fabricado por Equinox</span><span class="visor-foto__mini" data-foto-mini></span></figcaption>
+      </figure>
+      <div class="visor-3d__vistas" role="group" aria-label="Vistas del modelo" data-vistas></div>
+      <p class="visor-3d__ayuda"><svg width="20" height="20" aria-hidden="true"><use href="assets/img/iconos.svg#i-hand-grabbing"/></svg> Arrastra para girar</p>
+    </div>
+  </div>
+</section>
+
+<section class="funciona" aria-labelledby="titulo-funciona">
+  <div class="contenedor funciona__cabeza">
+    <div class="seccion__cabeza revela" style="margin-bottom:0">
+      <h2 id="titulo-funciona">Así trabaja, paso a paso.</h2>
+      <div style="justify-self:end;display:grid;gap:14px"><p class="lead">Desplázate: primero lo verás pieza por pieza y luego en funcionamiento, con las lecturas de cada etapa.</p><p><span class="sello">Lecturas de muestra</span></p></div>
+    </div>
+  </div>
+  <div class="funciona__grid">
+    <div class="funciona__escena">
+      <canvas id="visor-b" aria-label="Animación del funcionamiento del equipo"></canvas>
+      <div class="capa-visor" id="capa-b" aria-hidden="true"></div>
+    </div>
+    <div class="funciona__pasos" data-pasos-funciona></div>
+  </div>
+</section>
+
+<section class="seccion proceso-real" aria-labelledby="titulo-proceso" data-bloque-proceso hidden>
+  <div class="contenedor proceso-real__grid">
+    <div class="revela">
+      <span class="rotulo">Así se ve el proceso</span>
+      <h2 id="titulo-proceso" data-proceso-titulo style="margin-top:12px"></h2>
+      <p class="lead" data-proceso-texto style="margin-top:18px"></p>
+      <ol class="proceso-real__pasos" data-proceso-pasos></ol>
+    </div>
+    <div class="proceso-real__video revela">
+      <video data-autoplay muted loop playsinline preload="none" data-proceso-video></video>
+      <span class="credito">Video de muestra del proceso</span>
+    </div>
+  </div>
+</section>
+
+<section class="seccion cuadricula" aria-labelledby="titulo-spec" id="especificaciones">
+  <div class="contenedor">
+    <div class="seccion__cabeza revela">
+      <h2 id="titulo-spec">Especificaciones.</h2>
+      <div style="justify-self:end;display:grid;gap:14px"><p class="lead">Para planear el espacio, la energía y la instalación antes de la visita técnica.</p><p><span class="sello">Valores de muestra</span></p></div>
+    </div>
+    <div class="tabla-envoltura revela"><table class="tabla-spec" data-tabla-spec><caption class="sr">Especificaciones según capacidad</caption></table></div>
+    <div class="opciones-eq revela" style="margin-top:28px" data-comunes></div>
+    <div class="banda-pdf revela">
+      <div><strong>Lleva la ficha y el plano a tu reunión de compras.</strong><p>Ficha técnica con imágenes y contacto, y plano de disposición general A3 con vistas, cotas por capacidad, conexiones y lista de materiales.</p></div>
+      <div class="cajetin__acciones">
+        <button class="btn" type="button" data-pdf><span data-pdf-texto>Descargar ficha técnica</span> <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-download-simple"/></svg></span></button>
+        <button class="btn btn--claro" type="button" data-plano><svg width="18" height="18" aria-hidden="true"><use href="assets/img/iconos.svg#i-ruler"/></svg> <span data-plano-texto>Plano en PDF</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion" aria-labelledby="titulo-opciones">
+  <div class="contenedor dossier">
+    <div class="revela"><h2 id="titulo-opciones">Se arma a la medida.</h2><p class="lead" style="margin-top:16px">Opciones de muestra para definir en la cotización.</p></div>
+    <div class="opciones-eq revela" style="grid-template-columns:repeat(2,minmax(0,1fr))" data-opciones></div>
+  </div>
+</section>
+
+
+<section class="noche" aria-label="Video de referencia" data-bloque-video hidden>
+  <div class="fabrica__portada" data-portada style="margin-top:0;height:min(70vh,700px)">
+    <video data-autoplay muted loop playsinline preload="none"></video>
+    <div class="fabrica__frase"><a class="btn btn--sobre-noche" href="index.html#cotizar" data-cotizar>Cotizar este equipo <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a></div>
+    <span class="credito">Video de referencia · Pexels</span>
+  </div>
+</section>
+
+<section class="seccion cuadricula" aria-labelledby="titulo-caso-eq" data-bloque-caso hidden>
+  <div class="contenedor">
+    <div class="seccion__cabeza revela"><h2 id="titulo-caso-eq">Un equipo así, en uso.</h2><p class="lead">Caso relacionado.</p></div>
+    <div class="casos__grid" data-caso></div>
+  </div>
+</section>
+
+<section class="seccion" aria-labelledby="titulo-rel">
+  <div class="contenedor preguntas__grid">
+    <div class="revela"><h2 id="titulo-rel">Va bien con.</h2><p class="lead" style="margin-top:16px">Equipos de la misma línea.</p></div>
+    <ul class="lista-equipos revela" data-relacionados></ul>
+  </div>
+</section>
+
+<section class="seccion sigue" aria-labelledby="titulo-sigue">
+  <div class="contenedor">
+    <div class="sigue__cabeza revela"><h2 id="titulo-sigue">Sigue viendo equipos.</h2><a class="btn btn--claro" href="equipos.html" data-volver><svg width="18" height="18" aria-hidden="true" class="ico-izq"><use href="assets/img/iconos.svg#i-arrow-right"/></svg> Volver a los 19 equipos</a></div>
+    <div class="sigue__grid revela" data-sigue></div>
+  </div>
+</section>
+
+<section class="cotizar noche cuadricula" aria-labelledby="titulo-cta-eq" style="padding:clamp(72px,9vw,120px) 0">
+  <div class="contenedor pie__cierre" style="border:0;padding:0">
+    <h2 id="titulo-cta-eq">¿Lo ves en tu planta?</h2>
+    <div class="pie__acciones">
+      <a class="btn btn--sobre-noche" href="planta.html" data-a-planta>Arma tu planta en 3D <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-ruler"/></svg></span></a>
+      <a class="btn btn--wa" href="#" target="_blank" rel="noopener" data-wa>WhatsApp <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-whatsapp-logo"/></svg></span></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="pie noche" style="padding-top:48px">
+  <div class="contenedor">
+    <div class="pie__cols">
+      <div><span class="pie__logo"><img src="assets/img/logo-equinox.png" alt="Industrias Equinox Colombia" width="90" height="30"></span><p style="margin-top:14px">Equipos en acero inoxidable para la industria láctea y alimentaria. Copacabana, Antioquia.</p></div>
+      <div><h3>Contacto</h3><a href="tel:+573107250200">+57 310 725 0200</a><a href="tel:+573128410099">+57 312 841 0099</a><a href="mailto:ventas@indequinoxcol.com">ventas@indequinoxcol.com</a></div>
+      <div><h3>Sitio</h3><a href="index.html#soluciones">Soluciones</a><a href="equipos.html">Equipos</a><a href="planta.html">Arma tu planta</a></div>
+      <div><h3>Redes</h3><a href="#" aria-disabled="true">LinkedIn (por crear)</a><a href="#" aria-disabled="true">Instagram (por crear)</a><a href="#" aria-disabled="true">YouTube (por crear)</a></div>
+    </div>
+    <div class="pie__legal"><span>© 2026 Industrias Equinox Colombia.</span><span>Prototipo de diseño. Especificaciones, lecturas y opciones marcadas son de muestra. Modelos 3D hechos por código, de referencia.</span></div>
+  </div>
+</footer>
+
+<div class="barra-movil">
+  <a class="btn btn--wa btn--pequeno" href="#" target="_blank" rel="noopener" data-wa>WhatsApp <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-whatsapp-logo"/></svg></span></a>
+  <a class="btn btn--pequeno" href="index.html#cotizar" data-cotizar>Cotizar <span class="btn__ico"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-arrow-right"/></svg></span></a>
+</div>
+<div class="aviso-flotante" role="status" aria-live="polite" data-aviso hidden></div>
+
+<script src="vendor/gsap/gsap.min.js"></script>
+<script src="vendor/gsap/ScrollTrigger.min.js"></script>
+<script type="module" src="js/tema.js"></script>
+<script type="module" src="js/asistente.js"></script>
+<script type="module" src="js/equipo.js"></script>
+</body>
+</html>
