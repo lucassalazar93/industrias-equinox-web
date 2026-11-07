@@ -2,6 +2,7 @@
 // y se pasa a cotizarlos. La lista vive en localStorage (eqx-cotizacion), la misma que usan la portada,
 // Equipos y Arma tu planta. Al cambiarla avisa con el evento "eqx:cotizacion" para que cada página se ponga al día.
 import { EQUIPOS, imagenEquipo, pintarContador } from './data.js';
+import { registrar } from './medicion.js';
 
 const CLAVE = 'eqx-cotizacion';
 const boton = document.querySelector('[data-carrito]');
@@ -65,6 +66,7 @@ if (boton) {
 
   let abierto = false;
   const abrir = () => {
+    registrar('abrir_carrito', { n_equipos: leer().length });
     pintar();
     panel.hidden = false;
     requestAnimationFrame(() => panel.classList.add('abierto'));

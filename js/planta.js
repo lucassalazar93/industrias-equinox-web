@@ -7,6 +7,7 @@ import { EQUIPOS, LINEAS, APLICACIONES, numeroWhatsApp, apuntarWhatsApp, imagenE
 import { FICHAS } from './fichas.js';
 import { pedirDatos } from './interesado.js';
 import { CONTACTO } from './pdf.js';
+import { registrar, registrarAgregados } from './medicion.js';
 
 document.documentElement.classList.remove('sin-js');
 apuntarWhatsApp(); // aviso si hay número de WhatsApp de prueba (?wa=)
@@ -715,6 +716,7 @@ function iniciarRecorrido({ completa = true } = {}) {
   if (!estado.items.length) return avisar('Agrega equipos para ver el recorrido.');
   seleccionar(null);
   Object.assign(recorrido, { activo: true, pausado: false, i: 0, fase: 'equipo', t: 0, orden: ordenados(), pintado: -1, entroCompleta: false });
+  registrar('ver_recorrido_3d', { aplicacion: estado.producto });
   invitacion.hidden = true;
   $$('.llamar').forEach((el) => el.classList.remove('llamar'));
   try { sessionStorage.setItem('eqx-recorrido-visto', '1'); } catch { /* sin almacenamiento */ }
@@ -1102,6 +1104,7 @@ $('[data-pdf-planta]').addEventListener('click', async (e) => {
       fecha: `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`,
       cliente,
     });
+    registrar('descargar_pdf', { tipo: 'planta' });
     avisar('Plano descargado.');
   } catch (err) { console.error(err); avisar('No se pudo generar el PDF en este navegador.'); }
   finally { b.disabled = false; $('span', b).textContent = 'Plano en PDF'; }
@@ -1110,7 +1113,10 @@ $('[data-pdf-planta]').addEventListener('click', async (e) => {
 // ---------- cotizar ----------
 $$('[data-cotizar-planta]').forEach((a) => a.addEventListener('click', () => {
   guardarLS('eqx-planta', estado);
-  guardarLS('eqx-cotizacion', [...new Set(estado.items.map((i) => i.id))]);
+  let antes = []; try { antes = JSON.parse(localStorage.getItem('eqx-cotizacion')) || []; } catch { /* sin almacenamiento */ }
+  const ids = [...new Set(estado.items.map((i) => i.id))];
+  registrarAgregados(antes, ids, 'planta');
+  guardarLS('eqx-cotizacion', ids);
   a.href = 'index.html?planta=1#cotizar';
 }));
 

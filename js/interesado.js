@@ -19,6 +19,7 @@ let dialogo = null;
 function crear() {
   dialogo = document.createElement('dialog');
   dialogo.className = 'datos-cliente';
+  dialogo.dataset.clarityMask = 'true';
   dialogo.setAttribute('aria-labelledby', 'datos-cliente-titulo');
   dialogo.innerHTML = `
     <form method="dialog" novalidate>

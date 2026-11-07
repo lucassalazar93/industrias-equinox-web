@@ -1,6 +1,7 @@
 // Página Equipos: una lámina por línea de proceso, índice fijo y regreso desde la ficha.
 // La ficha vuelve aquí con #eq-<id> (o por historial) para caer en el mismo equipo.
 import { EQUIPOS, LINEAS, ORDEN_EQUIPOS, imagenEquipo, pintarContador } from './data.js';
+import { registrarAgregados } from './medicion.js';
 
 document.documentElement.classList.remove('sin-js');
 const $ = (s, r = document) => r.querySelector(s);
@@ -74,7 +75,9 @@ document.addEventListener('eqx:cotizacion', (e) => { enCot.clear(); e.detail.for
 document.addEventListener('click', (e) => {
   const b = e.target.closest('[data-agregar]'); if (!b) return;
   const id = b.dataset.agregar;
+  const antes = [...enCot];
   enCot.has(id) ? enCot.delete(id) : enCot.add(id);
+  registrarAgregados(antes, [...enCot], 'catalogo');
   guardar('eqx-cotizacion', [...enCot]);
   pintarCotizacion();
 });

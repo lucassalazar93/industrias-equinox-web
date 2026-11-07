@@ -5,6 +5,10 @@
 // asistente, fichas, línea, planta, código QR de los PDF, pie de página, barra del celular y ayuda para elegir).
 // Por ahora, el del dueño (+57 312 841 0099). Cuando Equinox defina el número final, se cambia solo aquí.
 export const WHATSAPP = '573128410099';
+// Medición (js/medicion.js): Google Analytics 4 y Microsoft Clarity (mapas de calor). Vacíos = no se carga nada.
+// Se llenan con los identificadores de las cuentas de Equinox cuando el sitio pase a su dominio.
+export const GA4_ID = '';
+export const CLARITY_ID = '';
 
 // Prueba con otro celular sin tocar el código: abrir la web con ?wa=57 + el número (sin espacios) y todo apunta
 // a ese celular. Sigue al pasar a otras páginas del sitio en esa pestaña; al abrir la web directo sin ?wa=

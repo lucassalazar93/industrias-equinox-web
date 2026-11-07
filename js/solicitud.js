@@ -12,6 +12,7 @@
 import { numeroWhatsApp, EQUIPOS, LINEAS, imagenEquipo } from './data.js';
 import { FICHAS } from './fichas.js';
 import { solicitudPDF } from './pdf.js';
+import { registrar, origenVisita } from './medicion.js';
 
 export const TIPOS_CLIENTE = [
   ['Finca o ganadero', 'Acopio y enfriamiento'],
@@ -32,9 +33,14 @@ export function nuevoFolio(d = new Date()) {
 }
 
 // Guarda o actualiza (por folio) la solicitud en este navegador
+// La primera vez que se registra un folio cuenta como solicitud nueva (evento generate_lead); el registro guarda
+// también de dónde llegó la persona (fuente), sin tocar el objeto de la solicitud.
 export function registrarSolicitud(sol) {
-  const lista = leer('eqx-solicitudes', []).filter((s) => s.folio !== sol.folio);
-  guardar('eqx-solicitudes', [...lista, sol]);
+  const previas = leer('eqx-solicitudes', []);
+  const nueva = !previas.some((s) => s.folio === sol.folio);
+  const fuente = previas.find((s) => s.folio === sol.folio)?.fuente || origenVisita().texto;
+  guardar('eqx-solicitudes', [...previas.filter((s) => s.folio !== sol.folio), { ...sol, fuente }]);
+  if (nueva) registrar('generate_lead', { origen: sol.origen, producto: sol.apl || 'otro', litros: sol.litros, n_equipos: sol.equipos?.length || 0, folio: sol.folio, fuente });
 }
 
 // Equipos de la solicitud con su capacidad: [{ id, dato }]
@@ -131,6 +137,7 @@ function descargar(blob, nombre) {
   setTimeout(() => URL.revokeObjectURL(url), 4000);
 }
 export async function descargarSolicitud(sol) {
+  registrar('descargar_pdf', { tipo: 'solicitud' });
   descargar(await pdfSolicitud(sol), nombreArchivo(sol));
 }
 // ¿Este navegador puede compartir archivos (celular)? Entonces el PDF va directo con el mensaje
@@ -141,6 +148,7 @@ export function puedeCompartirArchivos() {
 // Respaldo sin servidor: comparte el PDF con el mensaje (celular) o lo descarga y abre WhatsApp (computador).
 // ventana: la pestaña abierta en el mismo clic, para que el navegador no la bloquee mientras se arma el PDF.
 export async function enviarSolicitud(sol, { ventana = null } = {}) {
+  registrar('clic_whatsapp', { ubicacion: sol.origen === 'asistente' ? 'asistente' : 'exito' });
   const enlace = await subirSolicitud(sol);
   if (enlace) {
     const url = urlWhatsApp(sol, enlace);
