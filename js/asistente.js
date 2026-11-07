@@ -6,6 +6,7 @@
 // (litros, equipos de la cotización y sus datos de contacto si los llenó antes).
 import { APLICACIONES, EQUIPOS, LINEAS, ORDEN_EQUIPOS, numeroWhatsApp, apuntarWhatsApp, pintarContador } from './data.js';
 import { FICHAS } from './fichas.js';
+import { registrar, registrarAgregados } from './medicion.js';
 import { entender, pareceNombre, TEMAS, normalizar } from './asistente-texto.js';
 import { TIPOS_CLIENTE, PLAZOS, DEPARTAMENTOS, nuevoFolio, registrarSolicitud, textoSolicitud, enviarSolicitud, descargarSolicitud, prepararSolicitud, puedeCompartirArchivos, enlaceGuardado, pistaEnvio } from './solicitud.js';
 
@@ -74,7 +75,7 @@ raiz.innerHTML = `
       <span class="asistente__etiqueta">Asistente Equinox por WhatsApp</span>
     </button>
   </div>
-  <section class="asistente__panel" id="asistente-panel" role="dialog" aria-labelledby="asistente-titulo" hidden>
+  <section class="asistente__panel" id="asistente-panel" role="dialog" aria-labelledby="asistente-titulo" data-clarity-mask="true" hidden>
     <header class="asistente__cabeza">
       <img src="${IMG}avatar.webp" alt="" width="40" height="40">
       <div>
@@ -168,7 +169,8 @@ let iniciado = false, pendienteReanudar = false;
 // Página donde la persona tuvo el chat abierto por última vez: al volver ahí se abre solo
 const aquí = location.pathname + location.search;
 let abiertoChat = false, paginaChat = aquí;
-function abrir(intencion) {
+function abrir(intencion, { auto = false } = {}) {
+  if (!auto && panel.hidden) registrar('abrir_asistente', { intencion: intencion || 'ninguna' });
   abiertoChat = true; paginaChat = aquí;
   cerrarSaludo();
   aviso.hidden = true; raiz.classList.remove('avisando');
@@ -465,6 +467,7 @@ function alCarrito(ids) {
   const lista = [...actual, ...nuevos];
   try { localStorage.setItem('eqx-cotizacion', JSON.stringify(lista)); } catch { /* sin almacenamiento */ }
   datos.carritoVisto = lista; // así al retomar no lo cuenta como un cambio hecho por fuera
+  registrarAgregados(actual, lista, 'asistente');
   pintarContador(lista.length);
   document.dispatchEvent(new CustomEvent('eqx:cotizacion', { detail: lista }));
 }
@@ -1046,7 +1049,7 @@ function restaurarChat() {
     });
   }
   abiertoChat = !!g.abierto; paginaChat = g.pagina || aquí;
-  if (g.abierto && paginaChat === aquí) abrir();
+  if (g.abierto && paginaChat === aquí) abrir(undefined, { auto: true });
   else if (pagina !== 'inicio') setTimeout(saludar, reducido ? 300 : 900);
 }
 restaurarChat();

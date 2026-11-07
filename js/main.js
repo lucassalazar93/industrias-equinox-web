@@ -1,5 +1,6 @@
 import { APLICACIONES, EQUIPOS, CASOS, MOSTRAR_CASOS, GALERIA, pintarContador } from './data.js';
 import { dibujarLinea } from './drawing.js';
+import { registrar, registrarAgregados } from './medicion.js';
 import { nuevoFolio, registrarSolicitud, filasSolicitud, urlWhatsApp, enviarSolicitud, descargarSolicitud, prepararSolicitud, puedeCompartirArchivos, pistaEnvio } from './solicitud.js';
 
 document.documentElement.classList.remove('sin-js');
@@ -165,7 +166,7 @@ function pintarPanel(id) {
 indice.addEventListener('click', (e) => { const b = e.target.closest('[data-apl]'); if (b) pintarPanel(b.dataset.apl); });
 indice.addEventListener('mouseover', (e) => { const b = e.target.closest('[data-apl]'); if (b && matchMedia('(hover: hover)').matches) pintarPanel(b.dataset.apl); });
 $('[data-ver-plano]').addEventListener('click', () => elegirAplicacion(aplPanel, { irAlPlano: true }));
-$('[data-apl-cotizar]').addEventListener('click', () => prellenar(aplPanel, 2000, app(aplPanel).linea(2000).map((x) => x.id)));
+$('[data-apl-cotizar]').addEventListener('click', () => prellenar(aplPanel, 2000, app(aplPanel).linea(2000).map((x) => x.id), 'soluciones'));
 pintarPanel(aplPanel);
 
 // ---------- casos ----------
@@ -191,7 +192,9 @@ document.addEventListener('click', (e) => {
   const b = e.target.closest('[data-agregar]');
   if (!b) return;
   const id = b.dataset.agregar;
+  const antes = [...estado.equipos];
   estado.equipos.has(id) ? estado.equipos.delete(id) : estado.equipos.add(id);
+  registrarAgregados(antes, [...estado.equipos], 'portada');
   actualizarContador();
   pintarEquiposForm();
 });
@@ -238,8 +241,10 @@ function validar(n) {
   }
   return true;
 }
+let cotizacionIniciada = false;
 $('[data-siguiente]').addEventListener('click', () => {
   if (!validar(paso)) { const err = $('.campo.error input, .campo.error select', pasos[paso - 1]); err?.focus(); return; }
+  if (paso === 1 && !cotizacionIniciada) { cotizacionIniciada = true; registrar('iniciar_cotizacion'); }
   if (paso < 5) { irPaso(paso + 1); $('input, select', pasos[paso - 1])?.focus({ preventScroll: true }); return; }
   enviar();
 });
@@ -299,8 +304,10 @@ $('[data-nueva]').addEventListener('click', () => {
   irPaso(1);
 });
 
-function prellenar(aplicacion, litros, equipos = []) {
+function prellenar(aplicacion, litros, equipos = [], origen = 'portada') {
+  const antes = [...estado.equipos];
   equipos.forEach((id) => estado.equipos.add(id));
+  registrarAgregados(antes, [...estado.equipos], origen);
   actualizarContador();
   pintarEquiposForm();
   form.producto.value = aplicacion;
@@ -314,13 +321,13 @@ if (params.get('equipo') && EQUIPOS[params.get('equipo')]) {
   const idEq = params.get('equipo');
   const aplic = APLICACIONES.find((a) => a.linea(2000).some((x) => x.id === idEq));
   const capEq = Number(params.get('cap')) || 0;
-  prellenar(aplic?.id || '', /\bL$/.test(EQUIPOS[idEq].capacidad) && capEq ? capEq : 2000, [idEq]);
+  prellenar(aplic?.id || '', /\bL$/.test(EQUIPOS[idEq].capacidad) && capEq ? capEq : 2000, [idEq], 'ficha');
   form.nota.value = `Me interesa: ${EQUIPOS[idEq].nombre}${capEq ? `, capacidad ${fmt(capEq)}` : ''}.`;
 }
 if (params.get('planta')) {
   const planta = leer('eqx-planta', null);
   if (planta?.items?.length) {
-    prellenar(planta.producto, planta.litros, [...new Set(planta.items.map((i) => i.id))]);
+    prellenar(planta.producto, planta.litros, [...new Set(planta.items.map((i) => i.id))], 'planta');
     form.nota.value = `Planta armada en 3D en la web (sala de ${planta.sala.w} × ${planta.sala.l} m):\n${planta.items.map((i) => `• ${EQUIPOS[i.id].nombre} · ${fmt(i.cap)}`).join('\n')}`;
   }
 }

@@ -1,6 +1,7 @@
 import { EQUIPOS, LINEAS, CASOS, MOSTRAR_CASOS, numeroWhatsApp, FOTOS, ORDEN_EQUIPOS, imagenEquipo, pintarContador } from './data.js';
 import { FICHAS } from './fichas.js';
 import { crearVisor } from './visor.js';
+import { registrar } from './medicion.js';
 
 document.documentElement.classList.remove('sin-js');
 const $ = (s, r = document) => r.querySelector(s);
@@ -21,6 +22,7 @@ pintarContador(leer('eqx-cotizacion', []).length);
 const params = new URLSearchParams(location.search);
 const id = EQUIPOS[params.get('e')] && FICHAS[params.get('e')] ? params.get('e') : 'enfriamiento';
 const eq = EQUIPOS[id], ficha = FICHAS[id];
+registrar('ver_ficha', { equipo: id });
 const linea = LINEAS.find((l) => l.id === eq.linea);
 const capPedida = Number(params.get('cap'));
 let cap = ficha.capacidades.reduce((a, b) => (Math.abs(b - capPedida) < Math.abs(a - capPedida) ? b : a), ficha.capacidades[Math.floor(ficha.capacidades.length / 2)]);
@@ -190,6 +192,7 @@ $$('[data-pdf]').forEach((b) => b.addEventListener('click', async () => {
     const explosion = visorA.capturar('explosionada');
     const d = new Date();
     await fichaPDF({ eq, ficha, cap, unidad: ficha.unidad, general, explosion, foto: fotos[0]?.src, fecha: `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}` });
+    registrar('descargar_pdf', { tipo: 'ficha', equipo: id });
     avisar('Ficha técnica descargada.');
   } catch (err) {
     console.error(err);
@@ -206,6 +209,7 @@ $$('[data-plano]').forEach((b) => b.addEventListener('click', async () => {
     const { planoPDF } = await import('./pdf.js');
     const d = new Date();
     await planoPDF({ id, cap, fecha: `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}` });
+    registrar('descargar_pdf', { tipo: 'plano', equipo: id });
     avisar('Plano descargado.');
   } catch (err) {
     console.error(err);

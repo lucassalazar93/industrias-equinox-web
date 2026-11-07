@@ -403,6 +403,17 @@ Sin usar todavía: los robots con laptop y de brazos cruzados (`aprobado.png`), 
 - Del lado de WhatsApp, la app WhatsApp Business (gratis) ya permite mensaje de bienvenida, mensaje de ausencia, respuestas rápidas y catálogo.
 - Un bot que conteste dentro de WhatsApp necesita la plataforma de WhatsApp Business (API) con un proveedor. Tiene costo por conversación, así que conviene medir primero cuántos mensajes llegan desde la web.
 
+## Medición y mapas de calor (2026-11-06)
+
+`js/medicion.js` mide el embudo con Google Analytics 4 y Microsoft Clarity (mapas de calor y grabaciones). Los nombres de eventos y las reglas están en `.claude/skills/equinox-base/references/medicion.md` y en la skill `embudo-equinox`.
+
+- **Hoy está inactivo:** `GA4_ID` y `CLARITY_ID` están vacíos en `js/data.js`. Con ellos vacíos no se carga nada, y en localhost nunca se carga. Se llenan con las cuentas de Equinox cuando el sitio pase a su dominio.
+- **Modo de prueba:** abrir con `?debug_medicion=1`. Se recuerda en la pestaña y `?debug_medicion=0` lo apaga. Cada evento sale en la consola (`[medición]`) y queda en `window.eqxEventos`.
+- **Eventos:** `ver_ficha`, `agregar_cotizacion` (uno por equipo nuevo, con su origen), `abrir_carrito`, `abrir_asistente`, `iniciar_cotizacion`, `generate_lead` (una vez por folio), `clic_whatsapp` (con su ubicación), `descargar_pdf` y `ver_recorrido_3d`.
+- **Origen de la visita:** se guarda la primera visita por 90 días en `localStorage` (`eqx-origen`), con UTM, gclid o fbclid, o el sitio de donde llegó. Cada solicitud registrada guarda la `fuente` ("linkedin / organico · campaña" o "directo"), que también va en `generate_lead`.
+- **Datos personales:** a GA4 y a Clarity no se envían nombre, celular ni correo. En las grabaciones van ocultos el formulario (`data-clarity-mask` en `#formulario`), el panel del asistente y el diálogo de datos de las descargas.
+- **Probado el 2026-11-06** con `?debug_medicion=1&utm_source=linkedin…`: portada, carrito, pie, asistente, formulario completo (`generate_lead` con su fuente y sin datos personales), catálogo, ficha y recorrido 3D.
+
 ## Librerías y licencias
 
 - Three.js 0.170.0 (MIT) con RoomEnvironment y OrbitControls · `vendor/three/`
