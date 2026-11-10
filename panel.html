@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<!-- Panel interno de ventas: nunca en buscadores -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Panel de ventas | Industrias Equinox Colombia</title>
+<meta name="theme-color" content="#050a37">
+<link rel="icon" type="image/png" href="assets/img/logo-equinox-icono.png">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/panel.css">
+<script>try { var t = localStorage.getItem('eqx-tema'); if (t === 'oscuro' || t === 'claro') document.documentElement.dataset.tema = t; } catch (e) {}</script>
+</head>
+<body class="panel-app">
+<a class="sr" href="#vista">Saltar al contenido</a>
+
+<!-- Entrada: en la versión real, usuario y contraseña de Equinox; en el prototipo se elige el perfil -->
+<div class="entrada" id="entrada" hidden>
+  <div class="entrada__caja">
+    <img class="entrada__logo" src="assets/img/logo-equinox.png" alt="Industrias Equinox Colombia" width="132" height="44">
+    <p class="rotulo">Panel de ventas</p>
+    <h1>Todos sus clientes y oportunidades en un solo lugar</h1>
+    <p class="entrada__texto">En la versión real se entra con usuario y contraseña, y Equinox decide quién tiene acceso. Esta demo usa datos de ejemplo y las solicitudes que se hagan en el sitio desde este navegador.</p>
+    <div class="entrada__perfiles" role="group" aria-label="Entrar como">
+      <button type="button" class="perfil" data-perfil="Gerencia"><span class="perfil__ini">G</span><span><b>Gerencia</b><small>Ve todo el negocio</small></span></button>
+      <button type="button" class="perfil" data-perfil="Laura (ventas)"><span class="perfil__ini">L</span><span><b>Ventas</b><small>Sus clientes y seguimientos</small></span></button>
+    </div>
+    <a class="entrada__volver" href="index.html">← Volver al sitio</a>
+  </div>
+</div>
+
+<div class="app" id="app" hidden>
+  <aside class="lateral" aria-label="Menú del panel">
+    <a class="lateral__logo" href="#/resumen" aria-label="Panel de ventas, resumen"><img src="assets/img/logo-equinox.png" alt="" width="102" height="34"><span>Ventas</span></a>
+    <nav class="lateral__nav">
+      <a href="#/resumen" data-vista="resumen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h6V4H4zM14 20h6v-9h-6zM4 20h6v-4H4zM14 4v4h6V4z"/></svg><span>Resumen</span></a>
+      <a href="#/oportunidades" data-vista="oportunidades" data-corto="Tablero"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h4v16H4zM10 4h4v10h-4zM16 4h4v6h-4z"/></svg><span>Oportunidades</span></a>
+      <a href="#/seguimientos" data-vista="seguimientos" data-corto="Agenda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v5l3 2"/><circle cx="12" cy="12" r="8.5"/></svg><span>Seguimientos</span><b class="lateral__contador mono" data-contador-seg hidden></b></a>
+      <a href="#/clientes" data-vista="clientes"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M15.5 4.8a3.5 3.5 0 0 1 0 6.4M18 14.8c1.8.7 3 2.4 3.5 5.2"/></svg><span>Clientes</span></a>
+      <a href="#/ajustes" data-vista="ajustes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span>Ajustes</span></a>
+    </nav>
+    <button type="button" class="lateral__nueva" data-nueva><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Nueva solicitud</span></button>
+    <div class="lateral__pie">
+      <div class="lateral__usuario"><span class="perfil__ini" data-usuario-ini>G</span><span><b data-usuario>Gerencia</b><small>Demo · datos de ejemplo</small></span></div>
+      <div class="lateral__acciones">
+        <button class="tema-boton" type="button" data-tema-boton aria-pressed="false" aria-label="Cambiar a modo oscuro" title="Modo oscuro"><svg aria-hidden="true"><use href="assets/img/iconos.svg#i-moon"/></svg></button>
+        <a class="lateral__link" href="index.html" title="Ver el sitio">Sitio</a>
+        <button type="button" class="lateral__link" data-salir>Salir</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="contenido">
+    <header class="barra">
+      <div class="barra__titulo">
+        <h1 id="titulo-vista">Resumen</h1>
+        <p id="sub-vista"></p>
+      </div>
+      <div class="barra__acciones">
+        <label class="buscar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><span class="sr">Buscar cliente, empresa, ciudad o folio</span><input type="search" id="buscar" placeholder="Buscar cliente, ciudad o folio" autocomplete="off"><kbd class="mono">/</kbd></label>
+        <button type="button" class="boton boton--primario" data-nueva><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Nueva solicitud</span></button>
+      </div>
+    </header>
+    <div class="aviso-demo" role="note"><span><b>Demo con datos de ejemplo.</b> Las solicitudes que haga en el sitio desde este navegador entran aquí solas, marcadas como <span class="chip chip--sitio">Del sitio</span>.</span><button type="button" data-restablecer>Restablecer datos</button></div>
+    <div id="vista" class="vista" tabindex="-1"></div>
+  </main>
+</div>
+
+<!-- Ficha de la oportunidad -->
+<div class="velo" data-cerrar-ficha hidden></div>
+<aside class="ficha-op" id="ficha" aria-labelledby="ficha-titulo" aria-modal="true" role="dialog" hidden></aside>
+
+<!-- Nueva solicitud (WhatsApp, llamada, visita…) -->
+<dialog class="dialogo" id="dialogo-nueva" aria-labelledby="nueva-titulo">
+  <form method="dialog" class="dialogo__form" id="form-nueva">
+    <header class="dialogo__cab"><div><p class="rotulo">Registro manual</p><h2 id="nueva-titulo">Nueva solicitud</h2></div><button type="button" class="icono-btn" data-cerrar-dialogo aria-label="Cerrar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></header>
+    <p class="dialogo__ayuda">Para lo que llega por WhatsApp, llamada o visita. Lo del sitio entra solo.</p>
+    <div class="campos">
+      <label class="campo"><span>Nombre de contacto *</span><input name="nombre" required autocomplete="off"></label>
+      <label class="campo"><span>Empresa o finca</span><input name="empresa" autocomplete="off"></label>
+      <label class="campo"><span>Celular</span><input name="celular" inputmode="tel" autocomplete="off" placeholder="300 000 0000"></label>
+      <label class="campo"><span>Municipio</span><input name="municipio" autocomplete="off"></label>
+      <label class="campo"><span>Departamento</span><select name="departamento"></select></label>
+      <label class="campo"><span>Tipo de cliente</span><select name="tipo"></select></label>
+      <label class="campo"><span>¿Por dónde llegó? *</span><select name="fuente" required></select></label>
+      <label class="campo"><span>Responsable</span><select name="responsable"></select></label>
+      <fieldset class="campo campo--ancho"><legend>Equipos que pide</legend>
+        <div class="agregar-equipo"><select name="equipo" aria-label="Equipo"></select><input name="dato" placeholder="Capacidad (ej. 2.000 L)" aria-label="Capacidad"><button type="button" class="boton" data-agregar-equipo>Agregar</button></div>
+        <ul class="chips-equipos" data-chips-equipos></ul>
+      </fieldset>
+      <label class="campo"><span>Valor estimado (COP)</span><input name="valor" inputmode="numeric" placeholder="Se calcula con los equipos"></label>
+      <label class="campo"><span>Litros por día</span><input name="litros" inputmode="numeric"></label>
+      <label class="campo campo--ancho"><span>Nota</span><textarea name="nota" rows="2" placeholder="Lo que pidió, plazo, quién decide…"></textarea></label>
+    </div>
+    <footer class="dialogo__pie"><button type="button" class="boton" data-cerrar-dialogo>Cancelar</button><button type="submit" class="boton boton--primario" value="guardar">Guardar solicitud</button></footer>
+  </form>
+</dialog>
+
+<!-- Motivo de pérdida -->
+<dialog class="dialogo dialogo--chico" id="dialogo-motivo" aria-labelledby="motivo-titulo">
+  <form method="dialog" class="dialogo__form">
+    <header class="dialogo__cab"><div><p class="rotulo">Cerrar como perdida</p><h2 id="motivo-titulo">¿Por qué se perdió?</h2></div></header>
+    <p class="dialogo__ayuda">Un solo motivo, el principal. Con esto se ve qué corregir.</p>
+    <div class="motivos" data-motivos></div>
+    <footer class="dialogo__pie"><button type="submit" class="boton" value="cancelar">Cancelar</button><button type="submit" class="boton boton--peligro" value="ok">Marcar como perdida</button></footer>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script type="module" src="js/tema.js"></script>
+<script type="module" src="js/panel.js"></script>
+</body>
+</html>
