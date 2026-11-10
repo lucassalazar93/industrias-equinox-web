@@ -422,6 +422,8 @@ Es el panel administrativo que ofrece la propuesta (módulo M5). Está enlazado 
   - **Gerencia** ve todo.
   - **Ventas** (Laura) ve sus clientes; el filtro de responsable queda puesto.
   - El perfil se recuerda en la pestaña (`sessionStorage` `eqx-panel-usuario`).
+  - **Enlace directo:** `panel.html?perfil=gerencia` (o `?perfil=ventas`) entra sin elegir perfil. Es el que usa el QR de la propuesta.
+  - Con `&abrir=cotizacion` se abre además la ficha de la cotización abierta más grande; sirve para mostrarla y para las capturas.
 - **Resumen:**
   - Aviso de lo pendiente para hoy.
   - Selector de periodo (30 días, 90 días, 6 meses, 12 meses). Se recuerda en `eqx-panel-pref`.
