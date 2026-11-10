@@ -414,6 +414,61 @@ Sin usar todavía: los robots con laptop y de brazos cruzados (`aprobado.png`), 
 - **Datos personales:** a GA4 y a Clarity no se envían nombre, celular ni correo. En las grabaciones van ocultos el formulario (`data-clarity-mask` en `#formulario`), el panel del asistente y el diálogo de datos de las descargas.
 - **Probado el 2026-11-06** con `?debug_medicion=1&utm_source=linkedin…`: portada, carrito, pie, asistente, formulario completo (`generate_lead` con su fuente y sin datos personales), catálogo, ficha y recorrido 3D.
 
+## Panel de ventas (CRM) · `panel.html` (2026-11-10)
+
+Es el panel administrativo que ofrece la propuesta (módulo M5). Está enlazado en el pie de la portada como "Panel de ventas (equipo Equinox)" y es `noindex`.
+
+- **Entrada:** en la versión real se entra con usuario y contraseña. En la demo se elige el perfil:
+  - **Gerencia** ve todo.
+  - **Ventas** (Laura) ve sus clientes; el filtro de responsable queda puesto.
+  - El perfil se recuerda en la pestaña (`sessionStorage` `eqx-panel-usuario`).
+- **Resumen:**
+  - Aviso de lo pendiente para hoy.
+  - Selector de periodo (30 días, 90 días, 6 meses, 12 meses). Se recuerda en `eqx-panel-pref`.
+  - Cifras: solicitudes del mes contra los mismos días del mes anterior, valor de cotizaciones abiertas, tasa de cierre del periodo, mediana de primera respuesta (contra el periodo anterior) y ventas del mes contra la meta de Ajustes.
+  - Gráficas: solicitudes por mes, embudo (hasta dónde llegó cada oportunidad; un clic lleva a la etapa en el tablero), fuentes, ventas por mes, motivos de pérdida, equipos más pedidos, ventas por región y por tipo de cliente. Tienen tooltip con el mouse y con el teclado.
+  - **Por cerrar:** las 5 cotizaciones abiertas más grandes.
+  - **Equipo de ventas** (solo Gerencia): abiertas, en juego, ganadas, vendido, cierre, primera respuesta y vencidos por persona. Un clic filtra el tablero por esa persona.
+  - **Actividad reciente.**
+  - **Descargar informe:** imprime el resumen (se guarda como PDF) con encabezado de Equinox, siempre en claro.
+- **Ajustes** (solo Gerencia):
+  - Meta mensual.
+  - Días de seguimiento (por defecto 3, 7 y 15; la cadena de «Hecho» los usa) y vigencia de la cotización.
+  - Equipo y accesos: agregar personas y quitar o dar acceso. Quien queda sin acceso sigue en "Equipo de ventas" mientras tenga oportunidades abiertas.
+  - Exportar todo a Excel.
+- **Oportunidades:**
+  - Tablero por etapa: Nuevo, Calificado, En costeo, Cotización enviada, Negociación, Ganado y Perdido; Ganado y Perdido muestran solo los últimos 45 días.
+  - Las tarjetas se arrastran entre columnas. En el celular la etapa se cambia en la ficha.
+  - Pasar a Perdido pide el motivo.
+  - Vista de lista ordenable y filtros por responsable y fuente.
+- **Seguimientos:**
+  - Lista de vencidos, de hoy y de los próximos 7 días.
+  - «Hecho» agenda el siguiente paso de la cadena: enviar cotización → día 3 → día 7 → día 15.
+  - «Mañana» pospone un día.
+- **Clientes:** la base de datos agrupada por cliente. «Exportar a Excel» descarga un CSV con `;` y BOM, que Excel en español abre bien.
+- **Ficha:**
+  - Etapa, valor, responsable, próxima acción, lo que pidió e historial con notas.
+  - **Cotización:** número, fecha de envío, plazo de entrega, vigencia y si sigue vigente. «Registrar cotización enviada» pasa la oportunidad a Cotización enviada y arranca el seguimiento.
+  - **Contacto editable.** El botón de WhatsApp aparece apenas el cliente tiene celular.
+- **Lista de oportunidades:** muestra el total en juego y se exporta a Excel.
+- **Nueva solicitud:** registro manual de lo que llega por WhatsApp, llamada o visita. El valor se estima con los equipos.
+- **Búsqueda:** la tecla `/` busca por cliente, empresa, ciudad, folio o equipo.
+- **Datos:** viven en `localStorage` `eqx-crm` (`js/panel-datos.js`).
+  - Son 72 oportunidades de ejemplo, generadas siempre iguales (semilla en `generarEjemplo`), con fechas relativas a hoy.
+  - La semilla se elige para que las cifras se vean creíbles. Para recalibrar, se prueban semillas con `generarEjemplo(s)` en la consola.
+  - Los ajustes viven en el mismo `eqx-crm` (`ajustes`).
+  - Los precios de ejemplo **no son precios de Equinox**.
+  - Al cambiar la forma de los datos se sube `VERSION` y la demo se regenera.
+  - «Restablecer datos» vuelve a los de ejemplo.
+- **Conexión con el sitio:** cada solicitud del formulario o del asistente (`eqx-solicitudes`, guardada por `js/solicitud.js`) entra sola como oportunidad Nueva.
+  - Lleva su fuente y la marca «Del sitio».
+  - Al volver a la pestaña del panel aparece el aviso "Llegó 1 solicitud nueva del sitio".
+  - Funciona solo con el mismo navegador y el mismo dominio. En la versión real, el sitio la guarda en el servidor y el panel la lee de la base de datos.
+- **Archivos:** `panel.html`, `css/panel.css`, `js/panel.js` (vistas), `js/panel-datos.js` (modelo, ejemplo y conexión) y `js/panel-graficas.js` (gráficas SVG sin librerías).
+- **Probado el 2026-11-10** en escritorio (1366 y 1440 px) y celular (375 px), en claro y en oscuro:
+  - Entrada, resumen, tablero con arrastrar y soltar, lista, ficha (hecho, nota, perdido con motivo y reapertura), seguimientos, clientes, nueva solicitud y la llegada de una solicitud del sitio.
+  - Sin errores en la consola.
+
 ## Librerías y licencias
 
 - Three.js 0.170.0 (MIT) con RoomEnvironment y OrbitControls · `vendor/three/`
@@ -438,4 +493,6 @@ web-mock/
   js/pdf.js             ficha técnica, plano de planta y plano por equipo en PDF
   js/planos.js          dibujante de planos de disposición general (compartido con el skill)
   js/main.js, equipo.js, planta.js   comportamiento de cada página
+  panel.html, css/panel.css           panel de ventas (CRM)
+  js/panel.js, panel-datos.js, panel-graficas.js   vistas, datos y gráficas del panel
 ```
