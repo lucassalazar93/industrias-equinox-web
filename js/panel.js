@@ -782,5 +782,13 @@ window.addEventListener('resize', () => { clearTimeout(tRes); tRes = setTimeout(
 
 // ---------- arranque ----------
 cargar();
-const usuario = leerUsuario();
+// Enlace directo a la demo (?perfil=gerencia o ?perfil=ventas) y, para mostrarla, ?abrir=cotizacion abre la ficha
+// de la cotización abierta más grande
+const params = new URLSearchParams(location.search);
+const perfilUrl = { gerencia: 'Gerencia', ventas: 'Laura (ventas)' }[params.get('perfil')];
+const usuario = perfilUrl || leerUsuario();
 if (usuario) entrar(usuario); else $('#entrada').hidden = false;
+if (usuario && params.get('abrir') === 'cotizacion') {
+  const mayor = oportunidades().filter((o) => ['cotizado', 'negociacion'].includes(o.etapa) && o.cotizacion).sort((a, b) => b.valor - a.valor)[0];
+  if (mayor) setTimeout(() => abrirFicha(mayor.id), 300);
+}
